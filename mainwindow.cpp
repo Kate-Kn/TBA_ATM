@@ -15,9 +15,9 @@ MainWindow::~MainWindow()
 }
 void MainWindow::addNumber(QString str)
 {
-    QString current = ui->textBrowser_2->toPlainText();
-    ui->textBrowser_2->setText( current + str);
-    ui->textBrowser_2->setStyleSheet("font: 75 24pt \"MS Shell Dlg 2\"");
+    QString current = ui->input->toPlainText();
+    ui->input->setText( current + str);
+    ui->input->setStyleSheet("font: 75 24pt \"MS Shell Dlg 2\"");
 }
 void MainWindow::on_pushButton_2_clicked()
 {
@@ -62,13 +62,13 @@ void MainWindow::on_pushButton_9_clicked()
 }
 void MainWindow::on_pushButton_12_clicked()
 {
-    QString current = ui->textBrowser_2->toPlainText();
+    QString current = ui->input->toPlainText();
     if (current.length()>0)
-        ui->textBrowser_2->setText(current.first(current.length() - 1));
+        ui->input->setText(current.first(current.length() - 1));
 }
 void MainWindow::on_pushButton_13_clicked()
 {
-     ui->textBrowser_2->setText("");
+     ui->input->setText("");
 }
 void MainWindow::on_pushButton_submit_clicked()
 {
@@ -76,13 +76,19 @@ void MainWindow::on_pushButton_submit_clicked()
     bool isCorrect = true;
     if(isCorrect)
     {
-//        ui->textBrowser_2->setText("");
-//        ui->label->setText("Enter PIN: ");
-//        ui->label->setStyleSheet("font: 75 24pt \"MS Shell Dlg 2\"");
-//        ui->pushButton_submit->setEnabled(false);
-//        ui->pushButton_submit->setVisible(false);
-//        ui->pushButton_submit_2->setEnabled(true);
-//        ui->pushButton_submit_2->setVisible(true);
+        ui->stackedWidget->setCurrentIndex(2);
+
+    }else
+    {
+        ui->label_2->setText("Incorrect card number. Try again");
+    }
+}
+void MainWindow::on_psubmit_clicked()
+{
+    //check card num from database and value to isCorrect
+    bool isCorrect = true;
+    if(isCorrect)
+    {
         ui->stackedWidget->setCurrentIndex(1);
 
     }else
@@ -102,3 +108,16 @@ void MainWindow::on_pushButton_submit_2_clicked()
         ui->label_2->setText("Incorrect PIN for indicated card number. Try again");
     }
 }
+void MainWindow::on_withdrawMoney2_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(3);
+}
+void MainWindow::on_changePin_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(5);
+}
+void MainWindow::on_checkBalance_2_clicked()
+{
+     ui->stackedWidget->setCurrentIndex(4);
+}
+

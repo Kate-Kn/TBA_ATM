@@ -32,6 +32,10 @@ private slots:
     void on_pushButton_12_clicked();
     void on_pushButton_13_clicked();
     void on_pushButton_submit_clicked();
+     void on_psubmit_clicked();
      void on_pushButton_submit_2_clicked();
+     void on_withdrawMoney2_clicked();
+      void on_changePin_clicked();
+       void on_checkBalance_2_clicked();
 };
 #endif // MAINWINDOW_H
