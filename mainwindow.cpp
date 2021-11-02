@@ -60,12 +60,12 @@ void MainWindow::on_pushButton_9_clicked()
 {
     addNumber("9");
 }
-void MainWindow::on_pushButton_12_clicked()
-{
-    QString current = ui->input->toPlainText();
-    if (current.length()>0)
-        ui->input->setText(current.first(current.length() - 1));
-}
+//void MainWindow::on_pushButton_12_clicked()
+//{
+//    QString current = ui->input->toPlainText();
+//    if (current.length()>0)
+//        ui->input->setText(current.first(current.length() - 1));
+//}
 void MainWindow::on_pushButton_13_clicked()
 {
      ui->input->setText("");
