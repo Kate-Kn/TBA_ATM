@@ -2,6 +2,8 @@ QT       += core sql
 
 QT       += core gui
 
+TARGET = TBA_ATM
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
@@ -12,8 +14,13 @@ CONFIG += c++11
 
 SOURCES += \
     Account.cpp \
+    AuthCard.cpp \
+    Authorization.cpp \
     Card.cpp \
+    Cryptor.cpp \
+    Storage.cpp \
     StringValidator.cpp \
+    TransactionService.cpp \
     TransactionsCardAccount.cpp \
     TransactionsCards.cpp \
     TransactionsCash.cpp \
@@ -25,11 +32,20 @@ SOURCES += \
 HEADERS += \
     Account.h \
     AccountType.h \
+    AuthCard.h \
+    Authorization.h \
     Card.h \
     Company.h \
+    Cryptor.h \
+    IAuthorization.h \
+    ICryptor.h \
+    IStorage.h \
     ITransaction.h \
+    ITransactionService.h \
+    Storage.h \
     StringValidator.h \
     TransactionCash.h \
+    TransactionService.h \
     TransactionsCardAccount.h \
     TransactionsCards.h \
     db_connection.h \
