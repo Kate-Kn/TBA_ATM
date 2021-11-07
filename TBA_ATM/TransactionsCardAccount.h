@@ -8,6 +8,7 @@ private:
     virtual string doDisplay() const override;
 public:
     TransactionsCardAccount(double sum, QDate date, string description);
+    TransactionsCardAccount(const TransactionsCardAccount&);
     ~TransactionsCardAccount(){return;}
     string description() const {return _description;}
 };

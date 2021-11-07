@@ -8,6 +8,7 @@ private:
     string _description;
 public:
     AccountType(string description): _description(description) { return; }
+    AccountType(const AccountType& accT): _description(accT.description()) { return; }
     ~AccountType() { return; }
     string description() const { return _description; }
 };
