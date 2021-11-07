@@ -1,13 +1,15 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QRegularExpressionValidator>
+#include <QSqlQuery>
+#include <QDebug>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0);
-    QStringList charityTitles= {"Kind hands","Love and peace", "Take responsibility", "Lala", "djd"}; //getCharityTitle()
+    QStringList charityTitles= {"Kind hands","Love and peace", "Take responsibility", "Yor soul and heart", "Be sincere"}; //getCharityTitle()
     for(int i=0;i<charityTitles.length();++i){
         QPushButton *pushButton = new QPushButton(charityTitles.at(i));
         ui->gridLayout->addWidget(pushButton);
@@ -167,7 +169,7 @@ void MainWindow::on_see_clicked()
 void MainWindow::on_pushButton_submit_clicked()
 {
     //check pin from database and value to isCorrect
-    bool isCorrect = true;
+    bool isCorrect = (ui->inputPin->toPlainText().length() == 4);
     if(isCorrect)
     {
         pin = ui->inputPin ->toPlainText();
@@ -182,11 +184,12 @@ void MainWindow::on_pushButton_submit_clicked()
 void MainWindow::on_psubmit_clicked()
 {
     //check card num from database and value to isCorrect
-    bool isCorrect = true;
+    bool isCorrect = (ui->input->toPlainText().length() == 4);
     if(isCorrect)
     {
         cardNum = ui->input->toPlainText();
         ui->stackedWidget->setCurrentIndex(1);
+        balance = 1000000;
 
     }else
     {
@@ -235,9 +238,9 @@ void MainWindow::on_changePin_clicked()
 void MainWindow::on_checkBalance_2_clicked()
 {
      ui->stackedWidget->setCurrentIndex(4);
-     QString balance = ""; //getBalance(cardNum)
+    // QString balance = ""; //getBalance(cardNum)
      ui->balanceLabel->setStyleSheet("font: 75 30pt \"MS Shell Dlg 2\"");
-     ui->balanceLabel->setText("Your balance is: " + balance);
+     ui->balanceLabel->setText("Your balance is: " + QString::number(balance));
 }
 void MainWindow::on_pushButton_back_clicked()
 {
@@ -354,10 +357,11 @@ void MainWindow::on_sbm_clicked()
     }else
     {
         //database check
-        bool isAmountAvailable = true;
+        bool isAmountAvailable = (ui->inputAmount->toPlainText().toInt() > balance);
         if(isAmountAvailable)
         {
             ui->lastOpSuccess->setText("Transfer succeded");
+            balance -= ui->inputAmount->toPlainText().toInt();
             on_bck_clicked();
         }else
         {
@@ -586,12 +590,14 @@ void MainWindow::on_p_c_a_clicked()
 }
 void MainWindow::on_p_submit_clicked()
 {
-    if(!isFilledOld||!isFilledNew||!isFilledNewRepeat)
+    if(ui->oldPin->toPlainText()!=pin)
     {
-        ui->p_error->setText("Fill all fields");
+        ui->p_error->setText("Incorrect old Pin");
+        ui->oldPin->setText("");
+        changeField();
         return;
     }
-    if(newPin!=newPinRepeat)
+    if( ui->newPin->toPlainText()!= ui->newPinRepeat->toPlainText())
     {
         ui->p_error->setText("Fileds new pin and repeat new pin are not the same");
         ui->newPin->setText("");
@@ -599,6 +605,19 @@ void MainWindow::on_p_submit_clicked()
         changeField();
         return;
     }
+    if(!isFilledOld||!isFilledNew||!isFilledNewRepeat)
+    {
+        ui->p_error->setText("Fill all fields");
+        return;
+    }
+//    if(newPin!=newPinRepeat)
+//    {
+//        ui->p_error->setText("Fileds new pin and repeat new pin are not the same");
+//        ui->newPin->setText("");
+//        ui->newPinRepeat->setText("");
+//        changeField();
+//        return;
+//    }
     //check old pin from database
     bool isCorrect = true;
     if(isCorrect)
