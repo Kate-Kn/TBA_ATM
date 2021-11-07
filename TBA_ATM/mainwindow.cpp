@@ -337,10 +337,11 @@ void MainWindow::on_sbm_clicked()
         bool isCorrectCard = true;
         if(isCorrectCard)
         {
-            bool isAmountAvailable = true;
+            bool isAmountAvailable = (ui->inputAmount->toPlainText().toInt() < balance);
             if(isAmountAvailable)
             {
                 ui->lastOpSuccess->setText("Transfer succeded");
+                 balance -= ui->inputAmount->toPlainText().toInt();
                 on_bck_clicked();
             }else
             {
@@ -357,7 +358,7 @@ void MainWindow::on_sbm_clicked()
     }else
     {
         //database check
-        bool isAmountAvailable = (ui->inputAmount->toPlainText().toInt() > balance);
+        bool isAmountAvailable = (ui->inputAmount->toPlainText().toInt() < balance);
         if(isAmountAvailable)
         {
             ui->lastOpSuccess->setText("Transfer succeded");
