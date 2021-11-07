@@ -11,19 +11,33 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void addNumber(QString str, QTextBrowser *widget, int len);
+    void changeField();
+    void checkCase(QString num);
+    void caseTransfer(QString num);
+    void checkTransferField();
 private:
     Ui::MainWindow *ui;
     QString cardNum = "";
     QString pin = "";
     QString chosenCharity = "";
-
+    bool isFilledOld = false;
+    bool isFilledNew = false;
+    bool isFilledNewRepeat = false;
+    bool isTransferToFilled = false;
+    QString oldPin ="";
+    QString newPin = "";
+    QString newPinRepeat = "";
+    bool isMobileTransfer = false;
+    bool isCardTransfer = false;
+public slots:
+    // void pushButtonClicked();
 private slots:
     //pin window
+    void pushButtonClicked();
     void on_pushButton_2_clicked();
     void on_pushButton_clicked();
     void on_pushButton_1_clicked();
@@ -78,15 +92,28 @@ private slots:
     void on_pu_9_clicked();
     void on_pu_c_clicked();
     void on_pu_cA_clicked();
+    void on_sbm_clicked();
 
     //check balance window
     void on_backBank_clicked();
+    void on_p_0_clicked();
+    void on_p_1_clicked();
+    void on_p_2_clicked();
+    void on_p_3_clicked();
+    void on_p_4_clicked();
+    void on_p_5_clicked();
+    void on_p_6_clicked();
+    void on_p_7_clicked();
+    void on_p_8_clicked();
+    void on_p_9_clicked();
+    void on_p_c_clicked();
+    void on_p_c_a_clicked();
+    void on_p_submit_clicked();
 
     //change pin window
     void on_p_back_clicked();
 
     //charity enumeration window
     void on_back_clicked();
-    void pushButtonClicked(QString str);
 };
 #endif // MAINWINDOW_H

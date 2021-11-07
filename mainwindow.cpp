@@ -7,16 +7,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0);
-    QRegularExpression rx("[0-9]{4}");
-    QRegularExpressionValidator *v = new QRegularExpressionValidator(rx);
-    ui->newPinRepeat->setValidator(v);
-    ui->newPin->setValidator(v);
-    ui->oldPin->setValidator(v);
     QStringList charityTitles= {"Kind hands","Love and peace", "Take responsibility", "Lala", "djd"}; //getCharityTitle()
     for(int i=0;i<charityTitles.length();++i){
         QPushButton *pushButton = new QPushButton(charityTitles.at(i));
         ui->gridLayout->addWidget(pushButton);
-        ui->charityEnumeration->connect(pushButton, SIGNAL( clicked() ), ui->charityEnumeration, SLOT(pushButtonClicked(charityTitles[i])));
+        this->connect(pushButton, SIGNAL( clicked() ), this, SLOT(pushButtonClicked()));
     }
 }
 
@@ -29,7 +24,7 @@ void MainWindow::addNumber(QString str, QTextBrowser *widget, int lengthLessThan
    if(widget->toPlainText().length()< lengthLessThan ){
      QString current = widget->toPlainText();
      widget->setText( current + str);
-     widget->setStyleSheet("font: 75 24pt \"MS Shell Dlg 2\"");
+     widget->setStyleSheet("font: 75 20pt \"MS Shell Dlg 2\"");
     }
 }
 
@@ -123,20 +118,26 @@ void MainWindow::on_moneyTransfer_clicked()
 {
     ui->transferTo_2->setText("Enter card number: ");
     ui->stackedWidget->setCurrentIndex(3);
+    isCardTransfer = true;
 }
 void MainWindow::on_charityTransfer_clicked()
 {
     ui->stackedWidget->setCurrentIndex(6);
 }
-void MainWindow::pushButtonClicked(QString str)
+void MainWindow::pushButtonClicked()
 {
-    ui->trT->setText(str);
-    ui->trT->setEnabled(false);
+    QPushButton *bu = qobject_cast<QPushButton*>(sender());
+    ui->charityMessage->setStyleSheet("font: 75 11pt \"MS Shell Dlg 2\"");
+    ui->charityMessage->setAlignment(Qt::AlignCenter);
+    ui->charityMessage->setText("Transfer to: " + bu->text());
+    ui->trT->setVisible(false);
     ui->stackedWidget->setCurrentIndex(3);
 }
 void MainWindow::on_mobileTransfer_clicked()
 {
+    isMobileTransfer = true;
     ui->transferTo_2->setText("Enter phone: ");
+    ui->trT->setText("0");
     ui->stackedWidget->setCurrentIndex(3);
 }
 
@@ -148,6 +149,9 @@ void MainWindow::on_changePin_clicked()
 void MainWindow::on_checkBalance_2_clicked()
 {
      ui->stackedWidget->setCurrentIndex(4);
+     QString balance = ""; //getBalance(cardNum)
+     ui->balanceLabel->setStyleSheet("font: 75 30pt \"MS Shell Dlg 2\"");
+     ui->balanceLabel->setText("Your balance is: " + balance);
 }
 void MainWindow::on_pushButton_back_clicked()
 {
@@ -163,6 +167,12 @@ void MainWindow::on_bck_clicked()
     ui->transferTo_2->setText("");
     ui->trT->setVisible(true);
     ui->trT->setEnabled(true);
+    ui->trT->setText("");
+    ui->inputAmount->setText("");
+    ui->charityMessage -> setText("");
+    isMobileTransfer = false;
+    isTransferToFilled = false;
+    isCardTransfer = false;
 }
 void MainWindow::on_backBank_clicked()
 {
@@ -222,18 +232,44 @@ void MainWindow::on_pca_clicked()
 {
     ui->input->setText("");
 }
+void MainWindow::on_sbm_clicked()
+{
+    if(isMobileTransfer)
+    {
 
+    }else if (isCardTransfer)
+    {
+
+    }else
+    {
+        //database check
+        bool isAmountAvailable = true;
+        if(isAmountAvailable)
+        {
+            ui->lastOpSuccess->setText("Transfer succeded");
+            on_bck_clicked();
+        }else
+        {
+            ui->la_error->setText("Amount of money is not available");
+            ui->inputAmount->setText("");
+            checkTransferField();
+        }
+    }
+}
 void MainWindow::on_pu_0_clicked()
 {
-    addNumber("0", ui->inputAmount,9);
+    caseTransfer("0");
+    checkTransferField();
 }
 void MainWindow::on_pu_1_clicked()
 {
-    addNumber("0", ui->inputAmount,9);
+     caseTransfer("1");
+     checkTransferField();
 }
 void MainWindow::on_pu_2_clicked()
 {
-    addNumber("2", ui->inputAmount,9);
+    caseTransfer("2");
+    checkTransferField();
 }
 void MainWindow::on_pu_3_clicked()
 {
@@ -274,7 +310,179 @@ void MainWindow::on_pu_cA_clicked()
     ui->inputAmount->setText("");
 }
 
+void MainWindow::checkTransferField()
+{
+    if(isMobileTransfer)
+    {
+        if(ui->trT->toPlainText().length() == 9)
+            isTransferToFilled = true;
+        else
+            isTransferToFilled=false;
+    }else if(isCardTransfer)
+    {
+        if(ui->trT->toPlainText().length() == 4)
+            isTransferToFilled = true;
+        else
+            isTransferToFilled = false;
+    }
+
+}
+void MainWindow::caseTransfer(QString num)
+{
+    if (isMobileTransfer){
+    if(isTransferToFilled)
+        addNumber(num, ui->inputAmount,9);
+    else
+        addNumber(num, ui->trT, 9);
+    }else if(isCardTransfer)
+    {
+        if(isTransferToFilled)
+            addNumber(num, ui->inputAmount,9);
+        else
+            addNumber(num, ui->trT, 4);
+    }else
+    {
+        addNumber(num, ui->inputAmount,9);
+    }
+}
 void MainWindow::on_back_clicked()
 {
     ui->stackedWidget->setCurrentIndex(2);
+    ui->p_error->setText("");
+}
+void MainWindow::changeField()
+{
+    if(ui->oldPin->toPlainText().length() == 4)
+        isFilledOld = true;
+    else
+        isFilledOld = false;
+
+    if(ui->newPin->toPlainText().length() == 4)
+        isFilledNew = true;
+    else
+        isFilledNew =false;
+
+    if(ui->newPinRepeat->toPlainText().length() == 4)
+        isFilledNewRepeat = true;
+    else
+        isFilledNewRepeat = false;
+}
+void MainWindow::checkCase(QString str)
+{
+    if(!isFilledOld)
+        addNumber(str, ui->oldPin, 4);
+    else if(!isFilledNew)
+        addNumber(str, ui->newPin, 4);
+    else if(!isFilledNewRepeat)
+        addNumber(str, ui->newPinRepeat,4);
+}
+void MainWindow::on_p_1_clicked()
+{
+    checkCase("1");
+    changeField();
+}
+void MainWindow::on_p_0_clicked()
+{
+    checkCase("0");
+    changeField();
+}
+void MainWindow::on_p_2_clicked()
+{
+    checkCase("2");
+    changeField();
+}
+void MainWindow::on_p_3_clicked()
+{
+    checkCase("3");
+    changeField();
+}
+void MainWindow::on_p_4_clicked()
+{
+    checkCase("4");
+    changeField();
+}
+void MainWindow::on_p_5_clicked()
+{
+    checkCase("5");
+    changeField();
+}
+void MainWindow::on_p_6_clicked()
+{
+    checkCase("6");
+    changeField();
+}
+void MainWindow::on_p_7_clicked()
+{
+    checkCase("7");
+    changeField();
+}
+void MainWindow::on_p_8_clicked()
+{
+    checkCase("8");
+    changeField();
+}
+void MainWindow::on_p_9_clicked()
+{
+    checkCase("9");
+    changeField();
+}
+void MainWindow::on_p_c_clicked()
+{
+    if(!isFilledOld){
+        QString current = ui->oldPin->toPlainText();
+        if (current.length()>0)
+           ui->oldPin->setText(current.first(current.length() - 1));
+    }
+    else if(!isFilledNew){
+        QString current = ui->newPin->toPlainText();
+        if (current.length()>0)
+           ui->newPin->setText(current.first(current.length() - 1));
+    }
+    else if(!isFilledNewRepeat){
+        QString current = ui->newPinRepeat->toPlainText();
+        if (current.length()>0)
+           ui->newPinRepeat->setText(current.first(current.length() - 1));
+    }
+}
+void MainWindow::on_p_c_a_clicked()
+{
+    if(!isFilledOld){
+        ui->oldPin->setText("");
+    }
+    else if(!isFilledNew){
+        ui->newPin->setText("");
+    }
+    else if(!isFilledNewRepeat){
+        ui->newPinRepeat->setText("");
+    }
+}
+void MainWindow::on_p_submit_clicked()
+{
+    if(!isFilledOld||!isFilledNew||!isFilledNewRepeat)
+    {
+        ui->p_error->setText("Fill all fields");
+        return;
+    }
+    if(newPin!=newPinRepeat)
+    {
+        ui->p_error->setText("Fileds new pin and repeat new pin are not the same");
+        ui->newPin->setText("");
+        ui->newPinRepeat->setText("");
+        changeField();
+        return;
+    }
+    //check old pin from database
+    bool isCorrect = true;
+    if(isCorrect)
+    {
+        ui->stackedWidget->setCurrentIndex(2);
+        ui->lastOpSuccess->setText("Pin successfully changed");
+        ui->p_error->setText("");
+    }else
+    {
+        ui->p_error->setText("Incorrect old pin");
+        ui->oldPin->setText("");
+        changeField();
+        return;
+    }
 }
