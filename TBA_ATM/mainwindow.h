@@ -14,15 +14,11 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void addNumber(QString str, QTextBrowser *widget, int len);
-    void changeField();
-    void checkCase(QString num);
-    void caseTransfer(QString num);
-    void checkTransferField();
 private:
     Ui::MainWindow *ui;
     QString cardNum = "";
     QString pin = "";
+    bool isVisible = false;
     QString chosenCharity = "";
     bool isFilledOld = false;
     bool isFilledNew = false;
@@ -33,8 +29,11 @@ private:
     QString newPinRepeat = "";
     bool isMobileTransfer = false;
     bool isCardTransfer = false;
-public slots:
-    // void pushButtonClicked();
+    void addNumber(QString str, QTextBrowser *widget, int len);
+    void changeField();
+    void checkCase(QString num);
+    void caseTransfer(QString num);
+    void checkTransferField();
 private slots:
     //pin window
     void pushButtonClicked();
@@ -52,6 +51,7 @@ private slots:
     void on_pushButton_ca_clicked();
     void on_pushButton_submit_clicked();
     void on_pushButton_back_clicked();
+    void on_see_clicked();
 
     //card window
     void on_psubmit_clicked();

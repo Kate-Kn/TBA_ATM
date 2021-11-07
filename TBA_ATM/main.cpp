@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "db_connection.h"
 #include <QApplication>
+#include <QtCore/QCoreApplication>
 
 int main(int argc, char *argv[])
 {

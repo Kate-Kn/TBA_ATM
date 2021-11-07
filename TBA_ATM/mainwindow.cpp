@@ -24,61 +24,146 @@ void MainWindow::addNumber(QString str, QTextBrowser *widget, int lengthLessThan
    if(widget->toPlainText().length()< lengthLessThan ){
      QString current = widget->toPlainText();
      widget->setText( current + str);
-     widget->setStyleSheet("font: 75 20pt \"MS Shell Dlg 2\"");
+     widget->setStyleSheet("font: 20pt \"MS Shell Dlg 2\"");
     }
 }
 
 void MainWindow::on_pushButton_clicked()
 {
-    addNumber("0", ui->inputPin,4);
+    if(isVisible)
+          on_see_clicked();
+    if(ui->inputPin->toPlainText().length()< 4 )
+    {
+        pin+="0";
+    }
+    addNumber("*", ui->inputPin,4);
 }
 void MainWindow::on_pushButton_1_clicked()
 {
-    addNumber("1", ui->inputPin,4);
+    if(isVisible)
+          on_see_clicked();
+    if(ui->inputPin->toPlainText().length()< 4 )
+    {
+        pin+="1";
+    }
+    addNumber("*", ui->inputPin,4);
 }
 void MainWindow::on_pushButton_2_clicked()
 {
-   addNumber("2", ui->inputPin,4);
+    if(isVisible)
+          on_see_clicked();
+    if(ui->inputPin->toPlainText().length()< 4 )
+    {
+        pin+="2";
+    }
+   addNumber("*", ui->inputPin,4);
 }
 void MainWindow::on_pushButton_3_clicked()
 {
-    addNumber("3", ui->inputPin,4);
+    if(isVisible)
+          on_see_clicked();
+    if(ui->inputPin->toPlainText().length()< 4 )
+    {
+        pin+="3";
+    }
+    addNumber("*", ui->inputPin,4);
 }
 void MainWindow::on_pushButton_4_clicked()
 {
-    addNumber("4", ui->inputPin,4);
+    if(isVisible)
+          on_see_clicked();
+    if(ui->inputPin->toPlainText().length()< 4 )
+    {
+        pin+="4";
+    }
+    addNumber("*", ui->inputPin,4);
 }
 void MainWindow::on_pushButton_5_clicked()
 {
-    addNumber("5", ui->inputPin,4);
+    if(isVisible)
+          on_see_clicked();
+    if(ui->inputPin->toPlainText().length()< 4 )
+    {
+        pin+="5";
+    }
+    addNumber("*", ui->inputPin,4);
 }
 void MainWindow::on_pushButton_6_clicked()
 {
-    addNumber("6", ui->inputPin,4);
+    if(isVisible)
+          on_see_clicked();
+    if(ui->inputPin->toPlainText().length()< 4 )
+    {
+        pin+="6";
+    }
+    addNumber("*", ui->inputPin,4);
 }
 void MainWindow::on_pushButton_7_clicked()
 {
-    addNumber("7", ui->inputPin,4);
+    if(isVisible)
+          on_see_clicked();
+    if(ui->inputPin->toPlainText().length()< 4 )
+    {
+        pin+="7";
+    }
+    addNumber("*", ui->inputPin,4);
 }
 void MainWindow::on_pushButton_8_clicked()
 {
-    addNumber("8", ui->inputPin,4);
+    if(isVisible)
+          on_see_clicked();
+    if(ui->inputPin->toPlainText().length()< 4 )
+    {
+        pin+="8";
+    }
+    addNumber("*", ui->inputPin,4);
 }
 void MainWindow::on_pushButton_9_clicked()
 {
-    addNumber("9", ui->inputPin,4);
+    if(isVisible)
+          on_see_clicked();
+    if(ui->inputPin->toPlainText().length()< 4 )
+    {
+        pin+="9";
+    }
+    addNumber("*", ui->inputPin,4);
 }
 void MainWindow::on_pushButton_c_clicked()
 {
+    if(isVisible)
+          on_see_clicked();
     QString current = ui->inputPin->toPlainText();
-    if (current.length()>0)
+    if (current.length()>0){
        ui->inputPin->setText(current.first(current.length() - 1));
+       pin = pin.first(pin.length() - 1);
+    }
 }
 void MainWindow::on_pushButton_ca_clicked()
 {
+    if(isVisible)
+          on_see_clicked();
    ui->inputPin->setText("");
+   pin= "";
 }
-
+void MainWindow::on_see_clicked()
+{
+    if(!isVisible){
+      ui->inputPin->setText(pin);
+      ui->see->setText("Hide");
+      isVisible=true;
+    }
+    else
+    {
+      isVisible=false;
+      QString str = "";
+      for(int i=0;i<pin.length();++i)
+      {
+          str+="*";
+      }
+      ui->inputPin->setText(str);
+      ui->see->setText("See");
+    }
+}
 void MainWindow::on_pushButton_submit_clicked()
 {
     //check pin from database and value to isCorrect
@@ -137,6 +222,7 @@ void MainWindow::on_mobileTransfer_clicked()
 {
     isMobileTransfer = true;
     ui->transferTo_2->setText("Enter phone: ");
+    ui->trT->setStyleSheet("font: 20pt \"MS Shell Dlg 2\"");
     ui->trT->setText("0");
     ui->stackedWidget->setCurrentIndex(3);
 }
@@ -155,10 +241,16 @@ void MainWindow::on_checkBalance_2_clicked()
 }
 void MainWindow::on_pushButton_back_clicked()
 {
+    pin = "";
+    cardNum = "";
     ui->stackedWidget->setCurrentIndex(0);
 }
 void MainWindow::on_logOut_clicked()
 {
+    pin = "";
+    cardNum = "";
+    ui->inputPin->setText("");
+    ui->input->setText("");
     ui->stackedWidget->setCurrentIndex(0);
 }
 void MainWindow::on_bck_clicked()
@@ -181,6 +273,9 @@ void MainWindow::on_backBank_clicked()
 void MainWindow::on_p_back_clicked()
 {
     ui->stackedWidget->setCurrentIndex(2);
+    ui->oldPin->setText("");
+    ui->newPin->setText("");
+    ui->newPinRepeat->setText("");
 }
 void MainWindow::on_p0_clicked()
 {
@@ -234,12 +329,28 @@ void MainWindow::on_pca_clicked()
 }
 void MainWindow::on_sbm_clicked()
 {
-    if(isMobileTransfer)
+    if (isCardTransfer)
     {
-
-    }else if (isCardTransfer)
-    {
-
+        bool isCorrectCard = true;
+        if(isCorrectCard)
+        {
+            bool isAmountAvailable = true;
+            if(isAmountAvailable)
+            {
+                ui->lastOpSuccess->setText("Transfer succeded");
+                on_bck_clicked();
+            }else
+            {
+                ui->la_error->setText("Amount of money is not available");
+                ui->inputAmount->setText("");
+                checkTransferField();
+            }
+        }
+        else{
+            ui->la_error->setText("There is no such card");
+            ui->trT->setText("");
+            checkTransferField();
+        }
     }else
     {
         //database check
@@ -273,41 +384,58 @@ void MainWindow::on_pu_2_clicked()
 }
 void MainWindow::on_pu_3_clicked()
 {
-    addNumber("3", ui->inputAmount,9);
+    caseTransfer("3");
+    checkTransferField();
 }
 void MainWindow::on_pu_4_clicked()
 {
-    addNumber("4", ui->inputAmount,9);
+    caseTransfer("4");
+    checkTransferField();
 }
 void MainWindow::on_pu_5_clicked()
 {
-    addNumber("5", ui->inputAmount,9);
+    caseTransfer("5");
+    checkTransferField();
 }
 void MainWindow::on_pu_6_clicked()
 {
-    addNumber("6", ui->inputAmount,9);
+    caseTransfer("6");
+    checkTransferField();
 }
 void MainWindow::on_pu_7_clicked()
 {
-    addNumber("7", ui->inputAmount,9);
+    caseTransfer("7");
+    checkTransferField();
 }
 void MainWindow::on_pu_8_clicked()
 {
-    addNumber("8", ui->inputAmount,9);
+    caseTransfer("8");
+    checkTransferField();
 }
 void MainWindow::on_pu_9_clicked()
 {
-    addNumber("9", ui->inputAmount,9);
+    caseTransfer("9");
+    checkTransferField();
 }
 void MainWindow::on_pu_c_clicked()
 {
-    QString current = ui->inputAmount->toPlainText();
-    if (current.length()>0)
-       ui->inputAmount->setText(current.first(current.length() - 1));
-}
+    if(isTransferToFilled){
+     QString current = ui->inputAmount->toPlainText();
+     if (current.length()>0)
+        ui->inputAmount->setText(current.first(current.length() - 1));
+    }else
+    {
+        QString current = ui->trT->toPlainText();
+        if (current.length()>0)
+           ui->trT->setText(current.first(current.length() - 1));
+    }
+    }
 void MainWindow::on_pu_cA_clicked()
 {
-    ui->inputAmount->setText("");
+    if(isTransferToFilled)
+       ui->inputAmount->setText("");
+    else
+        ui->trT->setText("");
 }
 
 void MainWindow::checkTransferField()

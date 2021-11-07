@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>5</number>
     </property>
     <widget class="QWidget" name="cardNumber">
      <widget class="QLabel" name="error">
@@ -550,6 +550,19 @@
       </property>
       <property name="text">
        <string/>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="see">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>120</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>See</string>
       </property>
      </widget>
     </widget>
@@ -1209,7 +1222,7 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>40</y>
+        <y>30</y>
         <width>101</width>
         <height>41</height>
        </rect>
@@ -1225,8 +1238,8 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>180</y>
-        <width>131</width>
+        <y>200</y>
+        <width>171</width>
         <height>41</height>
        </rect>
       </property>
@@ -1283,9 +1296,9 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>80</y>
+        <y>70</y>
         <width>171</width>
-        <height>41</height>
+        <height>51</height>
        </rect>
       </property>
      </widget>
@@ -1295,7 +1308,7 @@
         <x>20</x>
         <y>150</y>
         <width>171</width>
-        <height>41</height>
+        <height>51</height>
        </rect>
       </property>
      </widget>
@@ -1303,9 +1316,9 @@
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>220</y>
+        <y>240</y>
         <width>171</width>
-        <height>41</height>
+        <height>51</height>
        </rect>
       </property>
      </widget>
