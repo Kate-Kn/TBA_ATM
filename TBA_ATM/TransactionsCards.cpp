@@ -7,6 +7,11 @@ ITransaction(sum, date), _description(description){
     return;
 }
 
+TransactionsCards::TransactionsCards(const TransactionsCards& transaction):
+    ITransaction(transaction.sum(), transaction.date()), _description(transaction.description()){
+    return;
+}
+
 string TransactionsCards::doDisplay() const{
     string out = "";
     out += date().toString("ddMMyyyy").toStdString();

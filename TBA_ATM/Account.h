@@ -13,6 +13,7 @@ private:
 public:
     class BadAccount;
     Account (string iban, string name, Company company, AccountType type);
+    Account (const Account&);
     ~Account() {};
     string iban() const { return _iban; }
     string name() const { return _name; }

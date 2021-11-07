@@ -8,14 +8,15 @@ class ITransaction{
 private:
     double _sum;
     QDate _date;
-    virtual string doDisplay() const = 0;
+    virtual string doDisplay() const {return "";};
 public:
     class BadTransction;
-    ITransaction(double sum, QDate date): _sum(sum), _date(date){return;}
+    ITransaction(double newSum, QDate newDate): _sum(newSum), _date(newDate){return;}
+    virtual ~ITransaction() { return; }
     double sum() const { return _sum; }
     QDate date() const { return _date; }
     string display() const { return doDisplay(); }
-    virtual ~ITransaction() {return;}
+
 };
 
 class ITransaction::BadTransction{

@@ -2,10 +2,16 @@
 
 TransactionsCardAccount::TransactionsCardAccount(double sum, QDate date, string description):
 ITransaction(sum, date), _description(description){
-    if (sum <= 0)
+    if (sum <= 0.0)
         throw BadTransction("Sum must be grater than 0.");
     return;
 }
+
+TransactionsCardAccount::TransactionsCardAccount(const TransactionsCardAccount& transaction):
+    ITransaction(transaction.sum(), transaction.date()), _description(transaction.description()){
+    return;
+}
+
 
 string TransactionsCardAccount::doDisplay() const{
     string out = "";
