@@ -17,6 +17,8 @@ SOURCES += \
     TransactionsCardAccount.cpp \
     TransactionsCards.cpp \
     TransactionsCash.cpp \
+    db_config.cpp \
+    db_connection.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -30,6 +32,7 @@ HEADERS += \
     TransactionCash.h \
     TransactionsCardAccount.h \
     TransactionsCards.h \
+    db_connection.h \
     User.h \
     mainwindow.h
 
