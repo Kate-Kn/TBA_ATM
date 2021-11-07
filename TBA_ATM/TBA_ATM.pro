@@ -2,6 +2,8 @@ QT       += core sql
 
 QT       += core gui
 
+TARGET = TBA_ATM
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
