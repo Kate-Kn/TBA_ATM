@@ -29,6 +29,7 @@ HEADERS += \
     AccountType.h \
     Card.h \
     Company.h \
+    DataArrays.h \
     ITransaction.h \
     StringValidator.h \
     TransactionCash.h \

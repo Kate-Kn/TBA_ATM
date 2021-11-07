@@ -7,7 +7,7 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
-
+//as database is not ready for usage all proccesses are simulated in here
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -34,6 +34,7 @@ private:
     void checkCase(QString num);
     void caseTransfer(QString num);
     void checkTransferField();
+    int balance = 0;
 private slots:
     //pin window
     void pushButtonClicked();

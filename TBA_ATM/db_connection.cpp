@@ -2,7 +2,7 @@
 #include "db_connection.h"
 
 void DB::connect(){
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
        db.setHostName("localhost");
        db.setDatabaseName("atm");
        db.setUserName("root");
