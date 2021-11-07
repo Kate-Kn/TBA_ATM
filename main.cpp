@@ -1,9 +1,11 @@
 #include "mainwindow.h"
-
+#include "db_connection.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
+    DB *database = new DB();
+    database->connect();
     QApplication a(argc, argv);
     MainWindow w;
     w.resize(600,345);
