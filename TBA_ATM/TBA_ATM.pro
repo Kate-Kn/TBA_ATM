@@ -24,7 +24,7 @@ SOURCES += \
     TransactionsCardAccount.cpp \
     TransactionsCards.cpp \
     TransactionsCash.cpp \
-    db_config.cpp \
+    db_config.txt \
     db_connection.cpp \
     main.cpp \
     mainwindow.cpp

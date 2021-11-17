@@ -2,6 +2,7 @@
 #include "db_connection.h"
 #include <QApplication>
 #include <QtCore/QCoreApplication>
+#include <QSqlQuery>
 
 int main(int argc, char *argv[])
 {
