@@ -4,9 +4,10 @@
 
 class TransactionCash : public ITransaction{
 private:
-    virtual string doDisplay() const override;
+    virtual QString doDisplay() const override;
 public:
     TransactionCash(double sum, QDate date);
+    TransactionCash(){ return; }
     TransactionCash(const TransactionCash&);
     ~TransactionCash(){return;}
 };

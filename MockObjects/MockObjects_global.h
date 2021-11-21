@@ -1,0 +1,12 @@
+#ifndef MOCKOBJECTS_GLOBAL_H
+#define MOCKOBJECTS_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(MOCKOBJECTS_LIBRARY)
+#  define MOCKOBJECTS_EXPORT Q_DECL_EXPORT
+#else
+#  define MOCKOBJECTS_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // MOCKOBJECTS_GLOBAL_H
