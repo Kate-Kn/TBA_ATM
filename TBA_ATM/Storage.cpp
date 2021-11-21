@@ -1,4 +1,5 @@
 #include "Storage.h"
+#include <QSqlQuery>
 
 void Storage::doAddTransactionCardAccount(const TransactionsCardAccount&, const Card&, const Account&) const{
 
