@@ -4,12 +4,12 @@
 
 class TransactionService: public ITransactionService{
 private:
-    virtual void doTransactionCardAccount(const TransactionsCardAccount&, const Card&, const Account&) const override;
-    virtual void doTransactionCash(const TransactionCash&, const Card&) const override;
-    virtual void doTransactionCards(const TransactionsCards&, const Card&, const Card&) const override;
+    virtual void doTransactionCardAccount(const TransactionsCardAccount&, const Card&, const Account&) override;
+    virtual void doTransactionCash(const TransactionCash&, const Card&) override;
+    virtual void doTransactionCards(const TransactionsCards&, const Card&, const Card&) override;
+    TransactionService(const TransactionService& service) = delete;
 public:
-    TransactionService(IStorage newStorage): ITransactionService(newStorage){ return; }
-    TransactionService(const TransactionService& service): ITransactionService(service.storage()){ return; }
+    TransactionService(IStorage* newStorage): ITransactionService(newStorage){ return; }
     ~TransactionService(){ return; }
 };
 

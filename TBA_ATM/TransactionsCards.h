@@ -4,13 +4,15 @@
 
 class TransactionsCards: public ITransaction{
 private:
-    string _description;
-    virtual string doDisplay() const override;
+    QString _description;
+    virtual QString doDisplay() const override;
 public:
-    TransactionsCards(double sum, QDate date, string description);
+    TransactionsCards(double sum, QDate date, QString description);
     TransactionsCards(const TransactionsCards&);
+    TransactionsCards() { return; }
     ~TransactionsCards(){return;}
-    string description() const {return _description;}
+    const QString& description() const {return _description;}
+    void description(const QString& newDescription) {_description = newDescription; return; }
 };
 
 #endif
