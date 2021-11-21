@@ -7,7 +7,7 @@
 #include "Account.h"
 #include "AuthCard.h"
 #include "User.h"
-
+#include <QVector>
 class IStorage{
 private:
     virtual void doAddTransactionCardAccount(const TransactionsCardAccount&, const Card&, const Account&) = 0;
@@ -18,7 +18,7 @@ private:
     virtual User doGetUser(const QString&) const = 0;
     virtual Account doGetAccount(const QString&) const = 0;
     virtual vector<QString> doGetTransactionsList(const Card&) const = 0;
-    virtual vector<QString> doGetAllCharitiyTitles() const = 0;
+    virtual QVector<QString> doGetAllCharitiyTitles() const = 0;
     virtual vector<QString> doGetAllTitles(const QString&) const = 0;
     virtual void doChangePassword(const Card& card, const QString& pin) =0;
 public:
@@ -41,8 +41,8 @@ public:
         return doGetAccount(iban); }
     vector<QString> getTransactionsList(const Card& card) const{
         return doGetTransactionsList(card);}
-    vector<QString> getAllCharitiyTitles() { return doGetAllCharitiyTitles(); }
-    vector<QString> getAllTitles(const QString& type) {return doGetAllTitles(type);}
+    QVector<QString> getAllCharitiyTitles() const { return doGetAllCharitiyTitles(); }
+    vector<QString> getAllTitles(const QString& type) const {return doGetAllTitles(type);}
     void changePassword(const Card& card, const QString& pin)
     {
         doChangePassword(card, pin);

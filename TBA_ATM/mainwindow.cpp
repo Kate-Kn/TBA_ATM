@@ -9,17 +9,16 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0);
-    QStringList charityTitles= {"Kind hands","Love and peace", "Take responsibility", "Yor soul and heart", "Be sincere"}; //getCharityTitle()
+    cryptor = new Cryptor();
+    storage = new Storage();
+    auth = new Authorization(storage, cryptor);
+    transactionService = new TransactionService(storage);
+    QVector<QString> charityTitles= storage->getAllCharitiyTitles();
     for(int i=0;i<charityTitles.length();++i){
         QPushButton *pushButton = new QPushButton(charityTitles.at(i));
         ui->gridLayout->addWidget(pushButton);
         this->connect(pushButton, SIGNAL( clicked() ), this, SLOT(pushButtonClicked()));
     }
-    cryptor = new Cryptor();
-    storage = new Storage();
-    auth = new Authorization(storage, cryptor);
-    transactionService = new TransactionService(storage);
-
 }
 
 MainWindow::~MainWindow()

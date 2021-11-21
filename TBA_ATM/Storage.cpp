@@ -25,8 +25,8 @@ vector<QString> Storage::doGetTransactionsList(const Card&) const{
     vector<QString> res;
     return res;
 }
-vector<QString> Storage::doGetAllCharitiyTitles() const{
-    vector<QString> res;
+QVector<QString> Storage::doGetAllCharitiyTitles() const{
+    QVector<QString> res= {"Love and peace", "Be sincere"} ;
     return res;
 }
 vector<QString> Storage::doGetAllTitles(const QString&) const{

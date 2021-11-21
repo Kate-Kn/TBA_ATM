@@ -12,7 +12,7 @@ private:
     virtual User doGetUser(const QString&) const override;
     virtual Account doGetAccount(const QString&) const override;
     virtual vector<QString> doGetTransactionsList(const Card&) const override;
-    virtual vector<QString> doGetAllCharitiyTitles() const override;
+    virtual QVector<QString> doGetAllCharitiyTitles() const override;
     virtual vector<QString> doGetAllTitles(const QString&) const override;
     virtual void doChangePassword(const Card& card,const QString& pin) override;
 public:
