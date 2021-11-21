@@ -1,6 +1,9 @@
 #ifndef CRYPTOR_H
 #define CRYPTOR_H
+<<<<<<< HEAD
 #include <QString>
+=======
+>>>>>>> parent of 37bd244... sqlrunner class
 #include <unistd.h>
 #include "ICryptor.h"
 

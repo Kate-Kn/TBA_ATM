@@ -2,6 +2,10 @@
 #include "db_connection.h"
 #include <QApplication>
 #include <QtCore/QCoreApplication>
+<<<<<<< HEAD
+=======
+#include <QSqlQuery>
+>>>>>>> parent of 37bd244... sqlrunner class
 
 int main(int argc, char *argv[])
 {
