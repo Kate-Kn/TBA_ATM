@@ -5,9 +5,10 @@
 class Authorization: public IAuthorization{
 private:
     virtual Card doAuthorize(const AuthCard& ) const override;
+    virtual bool doCheckAuthorizationData(const AuthCard& authCard) const override;
+    Authorization(const Authorization& auth) = delete;
 public:
-    Authorization(IStorage newStorage, ICryptor newCryptor): IAuthorization(newStorage, newCryptor) { return; }
-    Authorization(const Authorization& auth): IAuthorization(auth.storage(), auth.cryptor()) { return; }
+    Authorization(IStorage* newStorage, ICryptor* newCryptor): IAuthorization(newStorage, newCryptor) { return; }
 };
 
 #endif

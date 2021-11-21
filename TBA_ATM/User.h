@@ -1,18 +1,23 @@
 #ifndef USER_H
 #define USER_H
-#include <string>
+
+#include <QString>
+
 using namespace std;
 
 class User{
 private:
-    string _name;
-    string _surname;
+    QString _name;
+    QString _surname;
 public:
-    User(string name, string surname): _name(name), _surname(surname) { return; }
+    User(QString name, QString surname): _name(name), _surname(surname) { return; }
     User(const User& user): _name(user.name()), _surname(user.surname()){ return; }
+    User() { return; }
     ~User(){ return; }
-    string name() const { return _name; }
-    string surname() const { return _surname; }
+    const QString& name() const { return _name; }
+    const QString& surname() const { return _surname; }
+    void name(const QString& newName) { _name = newName; return; }
+    void surname(const QString& newSurname) { _surname = newSurname; return; }
 };
 
 #endif
