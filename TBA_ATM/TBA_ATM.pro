@@ -28,7 +28,8 @@ SOURCES += \
     db_config.cpp \
     db_connection.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    sqlrunner.cpp
 
 HEADERS += \
     Account.h \
@@ -52,7 +53,8 @@ HEADERS += \
     TransactionsCards.h \
     db_connection.h \
     User.h \
-    mainwindow.h
+    mainwindow.h \
+    sqlrunner.h
 
 FORMS += \
     mainwindow.ui
