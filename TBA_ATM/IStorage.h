@@ -20,6 +20,7 @@ private:
     virtual vector<QString> doGetTransactionsList(const Card&) const = 0;
     virtual vector<QString> doGetAllCharitiyTitles() const = 0;
     virtual vector<QString> doGetAllTitles(const QString&) const = 0;
+    virtual void doChangePassword(const Card& card, const QString& pin) =0;
 public:
     class BadStorage;
     IStorage(){ return; }
@@ -42,6 +43,10 @@ public:
         return doGetTransactionsList(card);}
     vector<QString> getAllCharitiyTitles() { return doGetAllCharitiyTitles(); }
     vector<QString> getAllTitles(const QString& type) {return doGetAllTitles(type);}
+    void changePassword(const Card& card, const QString& pin)
+    {
+        doChangePassword(card, pin);
+    }
 };
 
 class IStorage::BadStorage{

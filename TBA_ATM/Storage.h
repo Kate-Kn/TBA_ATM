@@ -14,6 +14,7 @@ private:
     virtual vector<QString> doGetTransactionsList(const Card&) const override;
     virtual vector<QString> doGetAllCharitiyTitles() const override;
     virtual vector<QString> doGetAllTitles(const QString&) const override;
+    virtual void doChangePassword(const Card& card,const QString& pin) override;
 public:
     Storage(){ return; }
     ~Storage(){ return; }
