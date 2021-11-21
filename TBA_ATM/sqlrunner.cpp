@@ -415,9 +415,10 @@ void SqlRunner::changePassword(const QString card_num, const QString pin) {
                 continue;
             queryTxt.replace('\n', ' ');
             queryTxt.replace('\r', ' ');
+            qDebug() << queryTxt;
             query.prepare(queryTxt);
-            query.bindValue(":card_num", card_num);
-            query.bindValue(":pincode", pin);
+            query.bindValue(":card_num", card_num.toInt());
+            query.bindValue(":pincode", pin.toInt());
             if (!query.exec())
                 qFatal("Hello");
             query.finish();
@@ -434,10 +435,3 @@ const QStringList SqlRunner::file_to_list(const QString script_path) {
    }
    return scriptQueries;
 }
-
-
-
-
-
-
-
