@@ -13,16 +13,16 @@ void SqlRunner::addTransactionCardAccount(const QString id, const QString sum, c
                 continue;
             queryTxt.replace('\n', ' ');
             query.prepare(queryTxt);
-            query.bindValue(":id", id);
-            query.bindValue(":sum", sum);
+            query.bindValue(":id", id.toInt());
+            query.bindValue(":sum", sum.toDouble());
             query.bindValue(":transaction_date", date);
             query.bindValue(":transaction_description", desc);
-            query.bindValue(":card_card_num", card_num);
+            query.bindValue(":card_card_num", card_num.toInt());
             query.bindValue(":card_currency_name", currency);
             query.bindValue(":card_user_passport_num", passport_num);
             query.bindValue(":account_iban", iban);
-            query.bindValue(":account_company_id", comp_id);
-            query.bindValue(":account_account_type_code", type);
+            query.bindValue(":account_company_id", comp_id.toInt());
+            query.bindValue(":account_account_type_code", type.toInt());
             query.bindValue(":account_currency_name", acc_currency);
             if (!query.exec())
                 qFatal("Hello");
@@ -47,14 +47,14 @@ void SqlRunner::addTransactionCards(const QString id, const QString sum, const Q
                 continue;
             queryTxt.replace('\n', ' ');
             query.prepare(queryTxt);
-            query.bindValue(":id", id);
-            query.bindValue(":transaction_sum", sum);
+            query.bindValue(":id", id.toInt());
+            query.bindValue(":transaction_sum", sum.toDouble());
             query.bindValue(":transaction_date", date);
             query.bindValue(":transaction_description", desc);
-            query.bindValue(":card1_card_num", card1_num);
+            query.bindValue(":card1_card_num", card1_num.toInt());
             query.bindValue(":card1_currency_name", card1_currency);
             query.bindValue(":card1_user_passport_num", card1_passport_num);
-            query.bindValue(":card2_card_num", card2_num);
+            query.bindValue(":card2_card_num", card2_num.toInt());
             query.bindValue(":card2_currency_name", card2_currency);
             query.bindValue(":card2_user_passport_num", card2_passport_num);
                if (!query.exec())
@@ -80,11 +80,11 @@ void SqlRunner::addTransactionCash(const QString id, const QString sum, const QS
                 continue;
             queryTxt.replace('\n', ' ');
             query.prepare(queryTxt);
-            query.bindValue(":id", id);
-            query.bindValue(":transaction_sum", sum);
+            query.bindValue(":id", id.toInt());
+            query.bindValue(":transaction_sum", sum.toDouble());
             query.bindValue(":transaction_date", date);
             query.bindValue(":transaction_description", desc);
-            query.bindValue(":card_card_num", card_num);
+            query.bindValue(":card_card_num", card_num.toInt());
             query.bindValue(":card_currency_name", card_currency);
             query.bindValue(":card_user_passport_num", card_passport_num);
 
@@ -264,8 +264,8 @@ bool SqlRunner::checkCard(const QString card_num, const QString pin) {
             queryTxt.replace('\n', ' ');
             queryTxt.replace('\r', ' ');
             query.prepare(queryTxt);
-            query.bindValue(":card_num", card_num);
-            query.bindValue(":pincode", pin);
+            query.bindValue(":card_num", card_num.toInt());
+            query.bindValue(":pincode", pin.toInt());
             if (!query.exec())
                 qFatal("Hello");
             while (query.next()) {
@@ -315,7 +315,7 @@ QVector<QString> SqlRunner::fullnameByCard(const QString card_num) {
             queryTxt.replace('\n', ' ');
             queryTxt.replace('\r', ' ');
             query.prepare(queryTxt);
-            query.bindValue(":card_num", card_num);
+            query.bindValue(":card_num", card_num.toInt());
             if (!query.exec())
                 qFatal("Hello");
             res.append(query.value(0).toString());
@@ -339,8 +339,8 @@ QVector<TransactionsCards> SqlRunner::selectTransactionCards(const QString card_
             queryTxt.replace('\n', ' ');
             queryTxt.replace('\r', ' ');
             query.prepare(queryTxt);
-            query.bindValue(":card_card_from", card_from_num);
-            query.bindValue(":card_card_to", card_to_num);
+            query.bindValue(":card_card_from", card_from_num.toInt());
+            query.bindValue(":card_card_to", card_to_num.toInt());
             if (!query.exec())
                 qFatal("Hello");
             while (query.next()) {
@@ -366,7 +366,7 @@ QVector<TransactionsCardAccount> SqlRunner::selectTransactionsCardAccount(const 
             queryTxt.replace('\n', ' ');
             queryTxt.replace('\r', ' ');
             query.prepare(queryTxt);
-            query.bindValue(":card_card_num", card_num);
+            query.bindValue(":card_card_num", card_num.toInt());
             if (!query.exec())
                 qFatal("Hello");
             while (query.next()) {
@@ -392,7 +392,7 @@ QVector<TransactionCash> SqlRunner::selectTransactionCash(const QString card_num
             queryTxt.replace('\n', ' ');
             queryTxt.replace('\r', ' ');
             query.prepare(queryTxt);
-            query.bindValue(":card_card_num", card_num);
+            query.bindValue(":card_card_num", card_num.toInt());
             if (!query.exec())
                 qFatal("Hello");
             while (query.next()) {
