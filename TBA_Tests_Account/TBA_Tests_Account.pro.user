@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 5.0.3, 2021-11-09T20:30:43. -->
+<!-- Written by QtCreator 5.0.3, 2021-11-07T14:31:14. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -72,10 +72,6 @@
     <value type="Qt::CheckState" key="1@C:/TBA_ATM/TBA_ATM/TBA_Tests_Account/tst_testaccount.cpp:test_case1">Checked</value>
     <value type="Qt::CheckState" key="1@C:/TBA_ATM/TBA_Tests_Account/tst_testaccount.cpp:TestAccount">Checked</value>
     <value type="Qt::CheckState" key="1@C:/TBA_ATM/TBA_Tests_Account/tst_testaccount.cpp:test_case1">Checked</value>
-    <value type="Qt::CheckState" key="1@C:/try3/TBA_ATM/TBA_Tests_Account/tst_testaccount.cpp:TestAccount">Checked</value>
-    <value type="Qt::CheckState" key="1@C:/try3/TBA_ATM/TBA_Tests_Account/tst_testaccount.cpp:test_account_ibn_contains_not_num">Checked</value>
-    <value type="Qt::CheckState" key="1@C:/try3/TBA_ATM/TBA_Tests_Account/tst_testaccount.cpp:test_account_ibn_wrong_length">Checked</value>
-    <value type="Qt::CheckState" key="1@C:/try3/TBA_ATM/TBA_Tests_Account/tst_testaccount.cpp:test_correct_account">Checked</value>
    </valuemap>
    <value type="int" key="AutoTest.RunAfterBuild">0</value>
    <value type="bool" key="AutoTest.UseGlobal">true</value>
@@ -246,8 +242,9 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:C:/try3/TBA_ATM/TBA_Tests_Account/TBA_Tests_Account.pro</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/try3/TBA_ATM/TBA_Tests_Account/TBA_Tests_Account.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">TBA_Tests_Account2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:C:/TBA_ATM/TBA_ATM/TBA_Tests_Account/TBA_Tests_Account.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/TBA_ATM/TBA_ATM/TBA_Tests_Account/TBA_Tests_Account.pro</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>

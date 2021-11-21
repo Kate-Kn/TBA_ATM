@@ -11,10 +11,10 @@ TransactionCash::TransactionCash(const TransactionCash& transaction): ITransacti
     return;
 }
 
-QString TransactionCash::doDisplay() const{
-    QString out = "";
-    out.append(date().toString("ddMMyyyy"));
-    out.append('\n' + QString::number(sum()));
+string TransactionCash::doDisplay() const{
+    string out = "";
+    out += date().toString("ddMMyyyy").toStdString();
+    out += "\nWithdraw " + to_string(sum());
     return out;
 }
 

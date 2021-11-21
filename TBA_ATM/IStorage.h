@@ -10,48 +10,54 @@
 
 class IStorage{
 private:
-    virtual void doAddTransactionCardAccount(const TransactionsCardAccount&, const Card&, const Account&) = 0;
-    virtual void doAddTransactionCash(const TransactionCash&, const Card&) = 0;
-    virtual void doAddTransactionCards(const TransactionsCards&, const Card&, const Card&) = 0;
-    virtual bool doCheckAuthCard(const AuthCard&) const = 0;
-    virtual Card doGetCard(const QString&) const = 0;
-    virtual User doGetUser(const QString&) const = 0;
-    virtual Account doGetAccount(const QString&) const = 0;
-    virtual vector<QString> doGetTransactionsList(const Card&) const = 0;
-    virtual vector<QString> doGetAllCharitiyTitles() const = 0;
-    virtual vector<QString> doGetAllTitles(const QString&) const = 0;
+    virtual void doAddTransactionCardAccount(const TransactionsCardAccount&, const Card&, const Account&) const { return; };
+    virtual void doAddTransactionCash(const TransactionCash&, const Card&) const { return; }
+    virtual void doAddTransactionCards(const TransactionsCards&, const Card&, const Card&) const { return; }
+    virtual Card doCheckAuthCard(const AuthCard&) const { return Card("", 0.00, User("", ""));; }
+    virtual Card doGetCard(const string&) const { return  Card("", 0.00, User("", "")); }
+    virtual User doGetUser(const string&) const { return User("", ""); }
+    virtual Account doGetAccount(const string&) const { return Account("", "", Company("", ""), AccountType("")); }
+    virtual QString* doGetTransactionsList(const Card&) const {
+        QString* res = new QString[1];
+        return res;}
+    virtual QString* doGetAllCharitiyTitles() const{
+        QString* res = new QString[1];
+        return res;}
+    virtual QString* doGetAllTitles(const string&) const{
+        QString* res = new QString[1];
+        return res;}
 public:
     class BadStorage;
     IStorage(){ return; }
     virtual ~IStorage() { return; }
-    void addTransactionCardAccount(const TransactionsCardAccount& transaction, const Card& card, const Account& account) {
+    void addTransactionCardAccount(const TransactionsCardAccount& transaction, const Card& card, const Account& account) const{
         doAddTransactionCardAccount(transaction, card, account); }
-    void addTransactionCash(const TransactionCash& transaction, const Card& card) {
+    void addTransactionCash(const TransactionCash& transaction, const Card& card) const{
         doAddTransactionCash(transaction, card); }
-    void addTransactionCards(const TransactionsCards& transaction, const Card& firstCard, const Card& secondCard) {
+    void addTransactionCards(const TransactionsCards& transaction, const Card& firstCard, const Card& secondCard) const{
         doAddTransactionCards(transaction, firstCard, secondCard); }
-    bool checkAuthCard(const AuthCard& authCard) const{
+    Card checkAuthCard(const AuthCard& authCard) const{
         return doCheckAuthCard(authCard); }
-    Card getCard(const QString& cardNum) const{
+    Card getCard(const string& cardNum) const{
         return doGetCard(cardNum);}
-    User getUser(const QString& passportNum) const{
+    User getUser(const string& passportNum) const{
         return doGetUser(passportNum); }
-    Account getAccount(const QString& iban) const{
+    Account getAccount(const string& iban) const{
         return doGetAccount(iban); }
-    vector<QString> getTransactionsList(const Card& card) const{
+    QString* getTransactionsList(const Card& card) const{
         return doGetTransactionsList(card);}
-    vector<QString> getAllCharitiyTitles() { return doGetAllCharitiyTitles(); }
-    vector<QString> getAllTitles(const QString& type) {return doGetAllTitles(type);}
+    QString* getAllCharitiyTitles() { return doGetAllCharitiyTitles(); }
+    QString* getAllTitles(const string& type) {return doGetAllTitles(type);}
 };
 
 class IStorage::BadStorage{
 private:
-    const QString _reason;
+    const string _reason;
 public:
-    BadStorage(QString reason = "") :
+    BadStorage(string reason = "") :
         _reason(reason){};
     ~BadStorage() {};
-    QString diagnose() const { return _reason; };
+    string diagnose() const { return _reason; };
 };
 
 #endif

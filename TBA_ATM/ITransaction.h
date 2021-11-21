@@ -1,34 +1,32 @@
 #ifndef ITRANSACTION_H
 #define ITRANSACTION_H
 #include <QDate>
-#include <QString>
+#include <string>
 using namespace std;
 
 class ITransaction{
 private:
     double _sum;
     QDate _date;
-    virtual QString doDisplay() const {return "";};
+    virtual string doDisplay() const {return "";};
 public:
     class BadTransction;
-    ITransaction(double newSum, QDate newDate): _sum(newSum), _date(newDate){ return; }
-    ITransaction() { return; }
+    ITransaction(double newSum, QDate newDate): _sum(newSum), _date(newDate){return;}
     virtual ~ITransaction() { return; }
     double sum() const { return _sum; }
-    const QDate& date() const { return _date; }
-    void date(const QDate& newDate) { _date = newDate; return; }
-    QString display() const { return doDisplay(); }
+    QDate date() const { return _date; }
+    string display() const { return doDisplay(); }
 
 };
 
 class ITransaction::BadTransction{
 private:
-    const QString _reason;
+    const string _reason;
 public:
-    BadTransction(QString reason = "") :
+    BadTransction(string reason = "") :
         _reason(reason){};
     ~BadTransction() {};
-    QString diagnose() const { return _reason; };
+    string diagnose() const { return _reason; };
 };
 
 
