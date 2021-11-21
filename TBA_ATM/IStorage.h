@@ -7,19 +7,25 @@
 #include "Account.h"
 #include "AuthCard.h"
 #include "User.h"
-#include <QVector>
+
 class IStorage{
 private:
-    virtual void doAddTransactionCardAccount(const TransactionsCardAccount&, const Card&, const Account&) = 0;
-    virtual void doAddTransactionCash(const TransactionCash&, const Card&) = 0;
-    virtual void doAddTransactionCards(const TransactionsCards&, const Card&, const Card&) = 0;
-    virtual bool doCheckAuthCard(const AuthCard&) const = 0;
-    virtual Card doGetCard(const QString&) const = 0;
-    virtual User doGetUser(const QString&) const = 0;
-    virtual Account doGetAccount(const QString&) const = 0;
-    virtual QVector<QString> doGetTransactionsList(const Card&) const = 0;
-    virtual QVector<QString> doGetAllCharitiyTitles() const = 0;
-    virtual void doChangePassword(const Card& card, const QString& pin) =0;
+    virtual void doAddTransactionCardAccount(const TransactionsCardAccount&, const Card&, const Account&) const { return; };
+    virtual void doAddTransactionCash(const TransactionCash&, const Card&) const { return; }
+    virtual void doAddTransactionCards(const TransactionsCards&, const Card&, const Card&) const { return; }
+    virtual Card doCheckAuthCard(const AuthCard&) const { return Card("", 0.00, User("", ""));; }
+    virtual Card doGetCard(const string&) const { return  Card("", 0.00, User("", "")); }
+    virtual User doGetUser(const string&) const { return User("", ""); }
+    virtual Account doGetAccount(const string&) const { return Account("", "", Company("", ""), AccountType("")); }
+    virtual QString* doGetTransactionsList(const Card&) const {
+        QString* res = new QString[1];
+        return res;}
+    virtual QString* doGetAllCharitiyTitles() const{
+        QString* res = new QString[1];
+        return res;}
+    virtual QString* doGetAllTitles(const string&) const{
+        QString* res = new QString[1];
+        return res;}
 public:
     class BadStorage;
     IStorage(){ return; }
@@ -38,13 +44,10 @@ public:
         return doGetUser(passportNum); }
     Account getAccount(const string& iban) const{
         return doGetAccount(iban); }
-    QVector<QString> getTransactionsList(const Card& card) const{
+    QString* getTransactionsList(const Card& card) const{
         return doGetTransactionsList(card);}
-    QVector<QString> getAllCharitiyTitles() const { return doGetAllCharitiyTitles(); }
-    void changePassword(const Card& card, const QString& pin)
-    {
-        doChangePassword(card, pin);
-    }
+    QString* getAllCharitiyTitles() { return doGetAllCharitiyTitles(); }
+    QString* getAllTitles(const string& type) {return doGetAllTitles(type);}
 };
 
 class IStorage::BadStorage{

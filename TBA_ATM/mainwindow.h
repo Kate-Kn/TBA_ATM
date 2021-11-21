@@ -3,15 +3,6 @@
 
 #include <QMainWindow>
 #include <QTextBrowser>
-#include "AuthCard.h"
-#include "Card.h"
-#include "TransactionService.h"
-#include "Authorization.h"
-#include "TransactionsCardAccount.h"
-#include "TransactionsCards.h"
-#include "TransactionCash.h"
-#include "Cryptor.h"
-#include "Storage.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -25,13 +16,6 @@ public:
     ~MainWindow();
 private:
     Ui::MainWindow *ui;
-    AuthCard authCard;
-    Card card;
-    IAuthorization* auth;
-    ITransactionService* transactionService;
-    ICryptor* cryptor;
-    IStorage* storage;
-
     QString cardNum = "";
     QString pin = "";
     bool isVisible = false;
@@ -50,7 +34,6 @@ private:
     void checkCase(QString num);
     void caseTransfer(QString num);
     void checkTransferField();
-    void clearPins();
     int balance = 0;
 private slots:
     //pin window
