@@ -1,29 +1,33 @@
 #ifndef AUTHCARD_H
 #define AUTHCARD_H
-#include <string>
 #include "StringValidator.h"
+
+#include <QString>
 using namespace std;
 
 class AuthCard{
 private:
-    string _cardNum;
-    string _pincode;
+    QString _cardNum;
+    QString _pincode;
 public:
     class BadAuthCard;
-    AuthCard(string newCardNumber, string newPincode);
+    AuthCard(QString newCardNumber, QString newPincode);
     AuthCard(const AuthCard& authCard);
-    string cardNumber() const { return _cardNum; }
-    string pincode() const { return _pincode; }
+    AuthCard() { return; }
+    const QString& cardNumber() const { return _cardNum; }
+    const QString& pincode() const { return _pincode; }
+    void cardNumber(const QString& newCardNum);
+    void pincode(const QString& newPincode);
 };
 
 class AuthCard::BadAuthCard{
 private:
-    const string _reason;
+    const QString _reason;
 public:
-    BadAuthCard(string reason = "") :
+    BadAuthCard(QString reason = "") :
         _reason(reason){};
     ~BadAuthCard() {};
-    string diagnose() const { return _reason; };
+    QString diagnose() const { return _reason; };
 };
 
 #endif

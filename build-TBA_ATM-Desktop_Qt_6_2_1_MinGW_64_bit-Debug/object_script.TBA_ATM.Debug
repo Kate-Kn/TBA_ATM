@@ -3,12 +3,13 @@ debug/AuthCard.o
 debug/Authorization.o
 debug/Card.o
 debug/Cryptor.o
+debug/Currency.o
 debug/Storage.o
 debug/StringValidator.o
+debug/TransactionCash.o
 debug/TransactionService.o
 debug/TransactionsCardAccount.o
 debug/TransactionsCards.o
-debug/TransactionsCash.o
 debug/db_config.o
 debug/db_connection.o
 debug/main.o

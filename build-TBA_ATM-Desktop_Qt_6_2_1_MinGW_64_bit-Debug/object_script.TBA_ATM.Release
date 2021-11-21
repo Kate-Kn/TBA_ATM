@@ -3,12 +3,13 @@ release/AuthCard.o
 release/Authorization.o
 release/Card.o
 release/Cryptor.o
+release/Currency.o
 release/Storage.o
 release/StringValidator.o
+release/TransactionCash.o
 release/TransactionService.o
 release/TransactionsCardAccount.o
 release/TransactionsCards.o
-release/TransactionsCash.o
 release/db_config.o
 release/db_connection.o
 release/main.o

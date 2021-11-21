@@ -18,12 +18,13 @@ SOURCES += \
     Authorization.cpp \
     Card.cpp \
     Cryptor.cpp \
+    Currency.cpp \
     Storage.cpp \
     StringValidator.cpp \
+    TransactionCash.cpp \
     TransactionService.cpp \
     TransactionsCardAccount.cpp \
     TransactionsCards.cpp \
-    TransactionsCash.cpp \
     db_config.cpp \
     db_connection.cpp \
     main.cpp \
@@ -37,6 +38,7 @@ HEADERS += \
     Card.h \
     Company.h \
     Cryptor.h \
+    Currency.h \
     IAuthorization.h \
     ICryptor.h \
     IStorage.h \
