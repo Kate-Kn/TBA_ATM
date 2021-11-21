@@ -1,9 +1,9 @@
 #ifndef STRINGVALIDATOR_H
 #define STRINGVALIDATOR_H
-#include <QString>
+#include <string>
 #include <regex>
 using namespace std;
 
-bool isNumericalSequence(const QString&);
+bool isNumericalSequence(string);
 
 #endif

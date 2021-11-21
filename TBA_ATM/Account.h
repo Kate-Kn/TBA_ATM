@@ -3,44 +3,33 @@
 #include "Company.h"
 #include "AccountType.h"
 #include "StringValidator.h"
-#include "Currency.h"
-
-#include <QString>
 
 class Account{
 private:
-    QString _iban;
-    QString _name;
+    string _iban;
+    string _name;
     Company _company;
     AccountType _type;
-    Currency _currency;
 public:
     class BadAccount;
-    Account (QString iban, QString name, Company company, AccountType type, Currency currency);
-    Account(){ return; };
+    Account (string iban, string name, Company company, AccountType type);
     Account (const Account&);
     ~Account() {};
-    const QString& iban() const { return _iban; }
-    void iban(const QString& newIban);
-    const QString& name() const { return _name; }
-    void name(const QString& newName);
-    const Company& company() const { return _company; }
-    void company(const Company& newCompany);
-    const AccountType& type() const { return _type; }
-    void type(const AccountType& accType);
-    const Currency& currency() const { return _currency; }
-    void currency(const Currency& newCurrency);
-    QString display() const;
+    string iban() const { return _iban; }
+    string name() const { return _name; }
+    Company company() const { return _company; }
+    AccountType type() const { return _type; }
+    string display() const;
 };
 
 class Account::BadAccount{
 private:
-    const QString _reason;
+    const string _reason;
 public:
-    BadAccount(QString reason = "") :
+    BadAccount(string reason = "") :
         _reason(reason){};
     ~BadAccount() {};
-    QString diagnose() const { return _reason; };
+    string diagnose() const { return _reason; };
 };
 
 #endif

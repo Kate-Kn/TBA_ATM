@@ -1,30 +1,17 @@
 #include "TransactionService.h"
 
-void TransactionService::doTransactionCardAccount(const TransactionsCardAccount& transaction, const Card& card, const Account& acc) {
-    double currencyTaken = transaction.sum()*card.currency().rateUAH();
-    if(card.balance()<currencyTaken)
+void TransactionService::doTransactionCardAccount(const TransactionsCardAccount& transaction, const Card& card, const Account& acc) const{
+    if(card.balance()<transaction.sum())
         throw BadTransactionService("Cannot process the payment: not enough money on the card.");
-    try {
-        (*storage()).addTransactionCardAccount(transaction, card, acc);
-    }  catch (IStorage::BadStorage bs) {
-        throw BadTransactionService(bs.diagnose());
-    }
+    storage().addTransactionCardAccount(transaction, card, acc);
 }
-void TransactionService::doTransactionCash(const TransactionCash& transaction, const Card& card) {
-    try {
-        (*storage()).addTransactionCash(transaction, card);
-    }  catch (IStorage::BadStorage bs) {
-        throw BadTransactionService(bs.diagnose());
-    }
-
-}
-void TransactionService::doTransactionCards(const TransactionsCards& transaction, const Card& firstCard, const Card& secondCard) {
-    double currencyTaken = transaction.sum()*firstCard.currency().rateUAH();
-    if(firstCard.balance()<currencyTaken)
+void TransactionService::doTransactionCash(const TransactionCash& transaction, const Card& card) const{
+    if(card.balance()<transaction.sum())
         throw BadTransactionService("Cannot process the payment: not enough money on the card.");
-    try {
-        (*storage()).addTransactionCards(transaction, firstCard, secondCard);
-    }  catch (IStorage::BadStorage bs) {
-        throw BadTransactionService(bs.diagnose());
-    }
+    storage().addTransactionCash(transaction, card);
+}
+void TransactionService::doTransactionCards(const TransactionsCards& transaction, const Card& firstCard, const Card& secondCard) const{
+    if(firstCard.balance()<transaction.sum())
+        throw BadTransactionService("Cannot process the payment: not enough money on the card.");
+    storage().addTransactionCards(transaction, firstCard, secondCard);
 }

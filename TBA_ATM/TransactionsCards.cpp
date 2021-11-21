@@ -1,6 +1,6 @@
 #include "TransactionsCards.h"
 
-TransactionsCards::TransactionsCards(double sum, QDate date, QString description):
+TransactionsCards::TransactionsCards(double sum, QDate date, string description):
 ITransaction(sum, date), _description(description){
     if (sum <= 0)
         throw BadTransction("Sum must be grater than 0.");
@@ -12,10 +12,10 @@ TransactionsCards::TransactionsCards(const TransactionsCards& transaction):
     return;
 }
 
-QString TransactionsCards::doDisplay() const{
-    QString out = "";
-    out.append(date().toString("ddMMyyyy"));
-    out.append('\n' + description());
-    out.append('\n' + QString::number(sum()));
+string TransactionsCards::doDisplay() const{
+    string out = "";
+    out += date().toString("ddMMyyyy").toStdString();
+    out += '\n' + description();
+    out += '\n' + to_string(sum());
     return out;
 }

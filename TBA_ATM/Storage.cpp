@@ -1,36 +1,36 @@
 #include "Storage.h"
+#include <QSqlQuery>
 
-void Storage::doAddTransactionCardAccount(const TransactionsCardAccount&, const Card&, const Account&) {
-
-}
-void Storage::doAddTransactionCash(const TransactionCash&, const Card&) {
+void Storage::doAddTransactionCardAccount(const TransactionsCardAccount&, const Card&, const Account&) const{
 
 }
-void Storage::doAddTransactionCards(const TransactionsCards&, const Card&, const Card&) {
+void Storage::doAddTransactionCash(const TransactionCash&, const Card&) const{
 
 }
-bool Storage::doCheckAuthCard(const AuthCard&) const{
-    return false;
+void Storage::doAddTransactionCards(const TransactionsCards&, const Card&, const Card&) const{
+
 }
-Card Storage::doGetCard(const QString&) const{
-    return  Card("1234", 0.00, User("", ""), Currency("", 0.1));
+Card Storage::doCheckAuthCard(const AuthCard&) const{
+    return Card("", 0.00, User("", ""));
 }
-User Storage::doGetUser(const QString&) const{
+Card Storage::doGetCard(const string&) const{
+    return  Card("", 0.00, User("", ""));
+}
+User Storage::doGetUser(const string&) const{
     return User("", "");
 }
-Account Storage::doGetAccount(const QString&) const{
-    return Account("1234", "", Company("", ""), AccountType("1234", ""), Currency("", 0.1));
+Account Storage::doGetAccount(const string&) const{
+    return Account("", "", Company("", ""), AccountType(""));
 }
-QVector<QString> Storage::doGetTransactionsList(const Card&) const{
-    QVector<QString> res;
+QString* Storage::doGetTransactionsList(const Card&) const{
+    QString* res = new QString[1];
     return res;
 }
-QVector<QString> Storage::doGetAllCharitiyTitles() const{
-    QVector<QString> res= {"Love and peace", "Be sincere"} ;
+QString* Storage::doGetAllCharitiyTitles() const{
+    QString* res = new QString[1];
     return res;
 }
-
-void Storage::doChangePassword(const Card& card,const QString& pin)
-{
-    return;
+QString* Storage::doGetAllTitles(const string&) const{
+    QString* res = new QString[1];
+    return res;
 }

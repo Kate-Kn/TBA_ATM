@@ -9,11 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0);
-    cryptor = new Cryptor();
-    storage = new Storage();
-    auth = new Authorization(storage, cryptor);
-    transactionService = new TransactionService(storage);
-    QVector<QString> charityTitles= storage->getAllCharitiyTitles();
+    QStringList charityTitles= {"Kind hands","Love and peace", "Take responsibility", "Yor soul and heart", "Be sincere"}; //getCharityTitle()
     for(int i=0;i<charityTitles.length();++i){
         QPushButton *pushButton = new QPushButton(charityTitles.at(i));
         ui->gridLayout->addWidget(pushButton);
@@ -176,27 +172,9 @@ void MainWindow::on_pushButton_submit_clicked()
     bool isCorrect = (ui->inputPin->toPlainText().length() == 4);
     if(isCorrect)
     {
-        try{
-        authCard.pincode(ui->inputPin->toPlainText());
+        pin = ui->inputPin ->toPlainText();
         ui->stackedWidget->setCurrentIndex(2);
-        }catch(AuthCard::BadAuthCard ba)
-        {
-            ui->errorPin->setText(ba.diagnose());
-            return;
-        }
-        try{
-            card = auth->authorize(authCard);
-        }
-        catch(IAuthorization::BadAuthorization ba)
-        {
-            authCard = AuthCard();
-            if (! auth->checkAuthorizationData(authCard))
-            {
-              ui->errorPin->setText("Incorrect PIN for indicated card number. Try again");
-              return;
-            }
-        }
-        authCard = AuthCard();
+
     }else
     {
         ui->errorPin->setText("Incorrect PIN for indicated card number. Try again");
@@ -209,15 +187,9 @@ void MainWindow::on_psubmit_clicked()
     bool isCorrect = (ui->input->toPlainText().length() == 4);
     if(isCorrect)
     {
-        try{
-        authCard = AuthCard();
-        authCard.cardNumber(ui->input->toPlainText());
+        cardNum = ui->input->toPlainText();
         ui->stackedWidget->setCurrentIndex(1);
         balance = 1000000;
-        }catch(AuthCard::BadAuthCard ba)
-        {
-            ui->errorCardNum->setText(ba.diagnose());
-        }
 
     }else
     {
@@ -229,19 +201,16 @@ void MainWindow::on_withdrawMoney2_clicked()
 {
     ui->trT->setVisible(false);
     ui->stackedWidget->setCurrentIndex(3);
-    ui->lastOpSuccess->setText("");
 }
 void MainWindow::on_moneyTransfer_clicked()
 {
     ui->transferTo_2->setText("Enter card number: ");
     ui->stackedWidget->setCurrentIndex(3);
     isCardTransfer = true;
-    ui->lastOpSuccess->setText("");
 }
 void MainWindow::on_charityTransfer_clicked()
 {
     ui->stackedWidget->setCurrentIndex(6);
-    ui->lastOpSuccess->setText("");
 }
 void MainWindow::pushButtonClicked()
 {
@@ -259,13 +228,11 @@ void MainWindow::on_mobileTransfer_clicked()
     ui->trT->setStyleSheet("font: 20pt \"MS Shell Dlg 2\"");
     ui->trT->setText("0");
     ui->stackedWidget->setCurrentIndex(3);
-    ui->lastOpSuccess->setText("");
 }
 
 void MainWindow::on_changePin_clicked()
 {
     ui->stackedWidget->setCurrentIndex(5);
-    ui->lastOpSuccess->setText("");
 }
 
 void MainWindow::on_checkBalance_2_clicked()
@@ -273,9 +240,7 @@ void MainWindow::on_checkBalance_2_clicked()
      ui->stackedWidget->setCurrentIndex(4);
     // QString balance = ""; //getBalance(cardNum)
      ui->balanceLabel->setStyleSheet("font: 75 30pt \"MS Shell Dlg 2\"");
-     card = storage->getCard(card.cardNumber());
-     ui->balanceLabel->setText("Your balance is: " + QString::number(card.balance()));
-     ui->lastOpSuccess->setText("");
+     ui->balanceLabel->setText("Your balance is: " + QString::number(balance));
 }
 void MainWindow::on_pushButton_back_clicked()
 {
@@ -626,53 +591,46 @@ void MainWindow::on_p_c_a_clicked()
 }
 void MainWindow::on_p_submit_clicked()
 {
+    if(ui->oldPin->toPlainText()!=pin)
+    {
+        ui->p_error->setText("Incorrect old Pin");
+        ui->oldPin->setText("");
+        changeField();
+        return;
+    }
     if( ui->newPin->toPlainText()!= ui->newPinRepeat->toPlainText())
     {
         ui->p_error->setText("Fileds new pin and repeat new pin are not the same");
-        clearPins();
+        ui->newPin->setText("");
+        ui->newPinRepeat->setText("");
+        changeField();
         return;
     }
     if(!isFilledOld||!isFilledNew||!isFilledNewRepeat)
     {
         ui->p_error->setText("Fill all fields");
-        clearPins();
         return;
     }
-    if(newPin!=newPinRepeat)
+//    if(newPin!=newPinRepeat)
+//    {
+//        ui->p_error->setText("Fileds new pin and repeat new pin are not the same");
+//        ui->newPin->setText("");
+//        ui->newPinRepeat->setText("");
+//        changeField();
+//        return;
+//    }
+    //check old pin from database
+    bool isCorrect = true;
+    if(isCorrect)
     {
-        ui->p_error->setText("Fileds new pin and repeat new pin are not the same");
-        clearPins();
-        return;
-    }
-    authCard.cardNumber(card.cardNumber());
-    authCard.pincode(newPin);
-    try
-    {
-        auth->checkAuthorizationData(authCard);
-
-    }catch(IAuthorization::BadAuthorization)
-    {
-         ui->p_error->setText("Incorrect old Pin");
-         clearPins();
-         return;
-    }
-    authCard = AuthCard();
-    try
-    {
-        storage->changePassword(card, newPin);
-        clearPins();
         ui->stackedWidget->setCurrentIndex(2);
-        ui->lastOpSuccess->setText("Pin changed!");
-    }catch(IStorage::BadStorage ba)
+        ui->lastOpSuccess->setText("Pin successfully changed");
+        ui->p_error->setText("");
+    }else
     {
-        ui->p_error->setText(ba.diagnose());
-        clearPins();
+        ui->p_error->setText("Incorrect old pin");
+        ui->oldPin->setText("");
+        changeField();
+        return;
     }
-}
-void MainWindow::clearPins()
-{
-    ui->oldPin->setText("");
-    ui->newPin->setText("");
-    ui->newPinRepeat->setText("");
-    changeField();
 }

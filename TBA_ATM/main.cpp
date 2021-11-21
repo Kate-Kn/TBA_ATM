@@ -1,7 +1,10 @@
 #include "mainwindow.h"
 #include "db_connection.h"
+#include "sqlrunner.h"
 #include <QApplication>
 #include <QtCore/QCoreApplication>
+#include <QSqlQuery>
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {

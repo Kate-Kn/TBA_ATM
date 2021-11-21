@@ -9,31 +9,31 @@
 
 class ITransactionService {
 private:
-    IStorage* _storage;
-    virtual void doTransactionCardAccount(const TransactionsCardAccount&, const Card&, const Account&) =0;
-    virtual void doTransactionCash(const TransactionCash&, const Card&) = 0;
-    virtual void doTransactionCards(const TransactionsCards&, const Card&, const Card&) = 0;
+    IStorage _storage;
+    virtual void doTransactionCardAccount(const TransactionsCardAccount&, const Card&, const Account&) const { return; }
+    virtual void doTransactionCash(const TransactionCash&, const Card&) const { return; }
+    virtual void doTransactionCards(const TransactionsCards&, const Card&, const Card&) const { return; }
 public:
     class BadTransactionService;
-    ITransactionService(IStorage* newStorage): _storage(newStorage) { return; }
-    ~ITransactionService(){ delete _storage; return; }
-    void transactionCardAccount(const TransactionsCardAccount& transaction, const Card& card, const Account& acc)
+    ITransactionService(IStorage newStorage): _storage(newStorage) { return; }
+    ~ITransactionService(){ return; }
+    void transactionCardAccount(const TransactionsCardAccount& transaction, const Card& card, const Account& acc) const
     { return doTransactionCardAccount(transaction, card, acc); }
-    void transactionCash(const TransactionCash& transaction, const Card& card)
+    void transactionCash(const TransactionCash& transaction, const Card& card) const
     { return doTransactionCash(transaction, card); }
-    void transactionCards(const TransactionsCards& transaction, const Card& firstCard, const Card& secondCard)
+    void transactionCards(const TransactionsCards& transaction, const Card& firstCard, const Card& secondCard) const
     { return doTransactionCards(transaction, firstCard, secondCard); }
-    IStorage* storage() const { return _storage; }
+    IStorage storage() const { return _storage; }
 };
 
 class ITransactionService::BadTransactionService{
 private:
-    const QString _reason;
+    const string _reason;
 public:
-    BadTransactionService(QString reason = "") :
+    BadTransactionService(string reason = "") :
         _reason(reason){};
     ~BadTransactionService() {};
-    QString diagnose() const { return _reason; };
+    string diagnose() const { return _reason; };
 };
 
 #endif

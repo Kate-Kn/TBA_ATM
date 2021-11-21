@@ -18,17 +18,17 @@ SOURCES += \
     Authorization.cpp \
     Card.cpp \
     Cryptor.cpp \
-    Currency.cpp \
     Storage.cpp \
     StringValidator.cpp \
-    TransactionCash.cpp \
     TransactionService.cpp \
     TransactionsCardAccount.cpp \
     TransactionsCards.cpp \
-    db_config.cpp \
+    TransactionsCash.cpp \
+    db_config.txt \
     db_connection.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    sqlrunner.cpp
 
 HEADERS += \
     Account.h \
@@ -38,7 +38,6 @@ HEADERS += \
     Card.h \
     Company.h \
     Cryptor.h \
-    Currency.h \
     IAuthorization.h \
     ICryptor.h \
     IStorage.h \
@@ -52,7 +51,8 @@ HEADERS += \
     TransactionsCards.h \
     db_connection.h \
     User.h \
-    mainwindow.h
+    mainwindow.h \
+    sqlrunner.h
 
 FORMS += \
     mainwindow.ui

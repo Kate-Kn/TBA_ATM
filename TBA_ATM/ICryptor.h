@@ -1,28 +1,26 @@
 #ifndef ICRYPTOR_H
 #define ICRYPTOR_H
-
-#include <QString>
-
+#include <string>
 using namespace std;
 
 class ICryptor{
 private:
-    virtual QString doCryptPassword(const QString&) const = 0;
+    virtual string doCryptPassword(const string&) const {return "";};
 public:
     class BadCryptor;
     ICryptor(){ return; };
     virtual ~ICryptor(){ return; };
-    QString cryptPassword(const QString& str) const{ return doCryptPassword(str); }
+    string cryptPassword(const string& str){ return doCryptPassword(str); }
 };
 
 class ICryptor::BadCryptor{
 private:
-    const QString _reason;
+    const string _reason;
 public:
-    BadCryptor(QString reason = "") :
+    BadCryptor(string reason = "") :
         _reason(reason){};
     ~BadCryptor() {};
-    QString diagnose() const { return _reason; };
+    string diagnose() const { return _reason; };
 };
 
 #endif // ICRYPTOR_H
