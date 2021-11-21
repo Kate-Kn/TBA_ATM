@@ -25,7 +25,6 @@ SOURCES += \
     TransactionService.cpp \
     TransactionsCardAccount.cpp \
     TransactionsCards.cpp \
-    db_config.cpp \
     db_connection.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -63,3 +62,5 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES +=
