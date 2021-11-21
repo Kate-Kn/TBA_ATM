@@ -24,7 +24,6 @@ void SqlRunner::addTransactionCardAccount(const QString id, const QString sum, c
             query.bindValue(":account_company_id", 123);
             query.bindValue(":account_account_type_code", 123);
             query.bindValue(":account_currency_name", "Hrivna");
-            qDebug() << queryTxt;
             if (!query.exec())
                 qFatal("Hello");
             while (query.next()) {
@@ -53,7 +52,6 @@ Card SqlRunner::getCard(const int card_num) {
             queryTxt.replace('\r', ' ');
             query.prepare(queryTxt);
             query.bindValue(":card_num", card_num);
-            qDebug() << queryTxt;
             if (!query.exec())
                 qFatal("Hello");
             while (query.next()) {
@@ -83,7 +81,6 @@ User SqlRunner::getUser(const QString passport_num) {
             queryTxt.replace('\r', ' ');
             query.prepare(queryTxt);
             query.bindValue(":passport_num", passport_num);
-            qDebug() << queryTxt;
             if (!query.exec())
                 qFatal("Hello");
             while (query.next()) {
@@ -113,7 +110,6 @@ Account SqlRunner::getAccount(const QString acc_name) {
             queryTxt.replace('\r', ' ');
             query.prepare(queryTxt);
             query.bindValue(":passport_num", acc_name);
-            qDebug() << queryTxt;
             if (!query.exec())
                 qFatal("Hello");
             while (query.next()) {
@@ -141,7 +137,6 @@ QVector<QString> SqlRunner::getCharities() {
             queryTxt.replace('\n', ' ');
             queryTxt.replace('\r', ' ');
             query.prepare(queryTxt);
-            qDebug() << queryTxt;
             if (!query.exec())
                 qFatal("Hello");
             while (query.next()) {
@@ -167,7 +162,6 @@ bool SqlRunner::checkCard(const QString card_num, const QString pin) {
             query.prepare(queryTxt);
             query.bindValue(":card_num", card_num);
             query.bindValue(":pin", pin);
-            qDebug() << queryTxt;
             if (!query.exec())
                 qFatal("Hello");
             while (query.next()) {
