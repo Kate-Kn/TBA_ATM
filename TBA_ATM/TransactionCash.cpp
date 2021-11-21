@@ -2,7 +2,7 @@
 
 TransactionCash::TransactionCash(double newSum, QDate newDate): ITransaction(newSum, newDate){
     if (sum() <= 0)
-        throw BadTransction("Sum must be grater than 0.");
+        throw BadTransction("Sum must be greater than 0.");
     return;
 }
 
