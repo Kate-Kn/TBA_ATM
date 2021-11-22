@@ -1,36 +1,49 @@
 #include "Storage.h"
+#include "sqlrunner.h"
 
-void Storage::doAddTransactionCardAccount(const TransactionsCardAccount&, const Card&, const Account&) {
+void Storage::doAddTransactionCardAccount(const TransactionsCardAccount& transaction, const Card& card, const Account& account) {
+    SqlRunner runner;
+    return runner.addTransactionCardAccount(0,QString::number(transaction.sum()),transaction.date().toString(),transaction.description(), card.cardNumber(),card.currency().name(),card.user().surname(),
+                                            account.iban(),account.company().title(),account.type().name(),account.currency().name() );
+}//id transaction, card.user, account.company
+void Storage::doAddTransactionCash(const TransactionCash& transaction, const Card& card) {
+    SqlRunner runner;
+    return runner.addTransactionCash(0,QString::number(transaction.sum()),transaction.date().toString(), "", card.cardNumber(),card.currency().name(),card.user().surname());
+}//id transaction, card.user, account.company
 
-}
-void Storage::doAddTransactionCash(const TransactionCash&, const Card&) {
+void Storage::doAddTransactionCards(const TransactionsCards& transaction, const Card& card1, const Card& card2) {
+    SqlRunner runner;
+    return runner.addTransactionCards(0,QString::number(transaction.sum()),transaction.date().toString(),transaction.description(), card1.cardNumber(),card1.currency().name(),card1.user().surname(),
+                                            card2.cardNumber(),card2.currency().name(),card2.user().surname());
+}//id transaction, card1.user, card2.user
 
+bool Storage::doCheckAuthCard(const AuthCard& card) const{
+    SqlRunner runner;
+    return runner.checkCard(card.cardNumber(), card.pincode());
 }
-void Storage::doAddTransactionCards(const TransactionsCards&, const Card&, const Card&) {
+Card Storage::doGetCard(const QString& card_num) const{
+    SqlRunner runner;
+    return runner.getCard(card_num.toInt());
+}
+User Storage::doGetUser(const QString& passport_num) const{
+    SqlRunner runner;
+    return runner.getUser(passport_num);
+}
+Account Storage::doGetAccount(const QString& acc_name) const{
+    SqlRunner runner;
+    return runner.getAccount(acc_name);
+}
 
-}
-bool Storage::doCheckAuthCard(const AuthCard&) const{
-    return false;
-}
-Card Storage::doGetCard(const QString&) const{
-    return  Card("1234", 0.00, User("", ""), Currency("", 0.1));
-}
-User Storage::doGetUser(const QString&) const{
-    return User("", "");
-}
-Account Storage::doGetAccount(const QString&) const{
-    return Account("1234", "", Company("", ""), AccountType("1234", ""), Currency("", 0.1));
-}
-QVector<QString> Storage::doGetTransactionsList(const Card&) const{
-    QVector<QString> res;
-    return res;
-}
 QVector<QString> Storage::doGetAllCharitiyTitles() const{
-    QVector<QString> res= {"Love and peace", "Be sincere"} ;
-    return res;
+    SqlRunner runner;
+    return runner.getCharities();
 }
 
 void Storage::doChangePassword(const Card& card,const QString& pin)
 {
-    return;
+    SqlRunner runner;
+    return runner.changePassword(card.cardNumber(), pin);
 }
+
+
+

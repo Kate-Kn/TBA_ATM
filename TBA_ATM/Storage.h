@@ -11,7 +11,6 @@ private:
     virtual Card doGetCard(const QString&) const override;
     virtual User doGetUser(const QString&) const override;
     virtual Account doGetAccount(const QString&) const override;
-    virtual QVector<QString> doGetTransactionsList(const Card&) const override;
     virtual QVector<QString> doGetAllCharitiyTitles() const override;
     virtual void doChangePassword(const Card& card,const QString& pin) override;
 public:

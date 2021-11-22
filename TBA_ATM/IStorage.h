@@ -17,7 +17,6 @@ private:
     virtual Card doGetCard(const QString&) const = 0;
     virtual User doGetUser(const QString&) const = 0;
     virtual Account doGetAccount(const QString&) const = 0;
-    virtual QVector<QString> doGetTransactionsList(const Card&) const = 0;
     virtual QVector<QString> doGetAllCharitiyTitles() const = 0;
     virtual void doChangePassword(const Card& card, const QString& pin) =0;
 public:
@@ -38,8 +37,6 @@ public:
         return doGetUser(passportNum); }
     Account getAccount(const QString& iban) const{
         return doGetAccount(iban); }
-    QVector<QString> getTransactionsList(const Card& card) const{
-        return doGetTransactionsList(card);}
     QVector<QString> getAllCharitiyTitles() const { return doGetAllCharitiyTitles(); }
     void changePassword(const Card& card, const QString& pin)
     {

@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "db_connection.h"
+#include "sqlrunner.h"
 #include <QApplication>
 #include <QtCore/QCoreApplication>
 

@@ -1,7 +1,7 @@
 #ifndef CRYPTOR_H
 #define CRYPTOR_H
 #include <QString>
-#include <unistd.h>
+//#include <unistd.h>
 #include "ICryptor.h"
 
 class Cryptor: public ICryptor{

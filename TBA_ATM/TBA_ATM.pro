@@ -25,10 +25,10 @@ SOURCES += \
     TransactionService.cpp \
     TransactionsCardAccount.cpp \
     TransactionsCards.cpp \
-    db_config.cpp \
     db_connection.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    sqlrunner.cpp
 
 HEADERS += \
     Account.h \
@@ -52,7 +52,8 @@ HEADERS += \
     TransactionsCards.h \
     db_connection.h \
     User.h \
-    mainwindow.h
+    mainwindow.h \
+    sqlrunner.h
 
 FORMS += \
     mainwindow.ui
@@ -61,3 +62,5 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES +=
