@@ -26,7 +26,7 @@ const vector<string> DB::credentials(const char* cfg_filename) const {
 
 void DB::connect() const {
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-       vector<string> creds = this->credentials("C:/Users/aanos/TBA_ATM/TBA_ATM/db_config.txt");
+       vector<string> creds = this->credentials("D:/TBA_ATM/TBA_ATM/db_config.txt");
        QString host_name, db_name, user_name, pass;
        user_name = QString::fromStdString(creds.at(0));
        db_name = QString::fromStdString(creds.at(1));

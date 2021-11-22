@@ -31,7 +31,7 @@ User Storage::doGetUser(const QString& passport_num) const{
 }
 Account Storage::doGetAccount(const QString& acc_name) const{
     SqlRunner runner;
-    return runner.getAccount(acc_name);
+    return runner.getAccountByName(acc_name);
 }
 
 QVector<QString> Storage::doGetAllCharitiyTitles() const{
@@ -42,7 +42,7 @@ QVector<QString> Storage::doGetAllCharitiyTitles() const{
 void Storage::doChangePassword(const Card& card,const QString& pin)
 {
     SqlRunner runner;
-    return runner.changePassword(card.cardNumber(), pin);
+    return runner.changePassword(card.cardNumber(), _cryptor->cryptPassword(pin));
 }
 
 

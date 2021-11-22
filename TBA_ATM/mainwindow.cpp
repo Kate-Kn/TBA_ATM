@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0);
     cryptor = new Cryptor();
-    storage = new Storage();
+    storage = new Storage(cryptor);
     auth = new Authorization(storage, cryptor);
     transactionService = new TransactionService(storage);
     QVector<QString> charityTitles= storage->getAllCharitiyTitles();
@@ -235,24 +235,24 @@ void MainWindow::on_pushButton_submit_clicked()
     {
         try{
         authCard.pincode(ui->inputPin->toPlainText());
-        ui->stackedWidget->setCurrentIndex(2);
         }catch(AuthCard::BadAuthCard ba)
         {
             ui->errorPin->setText(ba.diagnose());
             return;
         }
         try{
+            if (! auth->checkAuthorizationData(authCard))
+            {
+              ui->errorPin->setText("Incorrect PIN or card. Try again");
+              return;
+            }
             card = auth->authorize(authCard);
             ui->errorPin->setText("");
+            ui->stackedWidget->setCurrentIndex(2);
         }
         catch(IAuthorization::BadAuthorization ba)
         {
-            authCard = AuthCard();
-            if (! auth->checkAuthorizationData(authCard))
-            {
-              ui->errorPin->setText("Incorrect PIN for indicated card number. Try again");
-              return;
-            }
+            ui->errorPin->setText(ba.diagnose());
         }
         authCard = AuthCard();
     }else
@@ -270,13 +270,14 @@ void MainWindow::on_psubmit_clicked()
         try{
         authCard = AuthCard();
         authCard.cardNumber(ui->input->toPlainText());
-        ui->stackedWidget->setCurrentIndex(1);
-        ui->p_error->setText("");
-        balance = 1000000;
+
         }catch(AuthCard::BadAuthCard ba)
         {
             ui->errorCardNum->setText(ba.diagnose());
+            return;
         }
+        ui->stackedWidget->setCurrentIndex(1);
+        ui->p_error->setText("");
 
     }else
     {
