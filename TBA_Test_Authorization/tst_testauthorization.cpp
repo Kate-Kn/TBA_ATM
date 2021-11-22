@@ -70,9 +70,8 @@ private:
     virtual Card doGetCard(const QString&) const override;
     virtual User doGetUser(const QString&) const override;
     virtual Account doGetAccount(const QString&) const override;
-    virtual vector<QString> doGetTransactionsList(const Card&) const override;
-    virtual vector<QString> doGetAllCharitiyTitles() const override;
-    virtual vector<QString> doGetAllTitles(const QString&) const override;
+    virtual QVector<QString> doGetAllCharitiyTitles() const override;
+    virtual void doChangePassword(const Card& card,const QString& pin) override;
     StorageMock(const StorageMock&) = delete;
     const Account& getDBAccaunt(const QString&) const;
     const DBCardMock& getDBCard(const QString&) const;
@@ -148,6 +147,14 @@ Card StorageMock::doGetCard(const QString& number) const {
     throw BadStorage("No such card stored");
 }
 
+void StorageMock::doChangePassword(const Card& card,const QString& pin){
+    DBCardMock cardb = getDBCard(card.cardNumber());
+    cardb.password(pin);
+    setCard(cardb);
+    return;
+}
+
+
 User StorageMock::doGetUser(const QString& number) const {
     for(int i = 0; i< userSize(); i++){
         if(_storedUsers[i].passportNum() == number)
@@ -168,29 +175,14 @@ Account StorageMock::doGetAccount(const QString& searchedIban) const {
     throw BadStorage("No such accaunt stored");
 }
 
-vector<QString> StorageMock::doGetTransactionsList(const Card&) const {
-    vector<QString> res;
-    //No action here
-    return res;
-}
-
-vector<QString> StorageMock::doGetAllCharitiyTitles() const {
-    vector<QString> res;
+QVector<QString> StorageMock::doGetAllCharitiyTitles() const {
+    QVector<QString> res;
     for(int i = 0; i<accSize(); i++){
         if(_storedAccs[i].type().name().toStdString() == "charity")
             res.push_back(_storedAccs[i].company().title());
     }
     return res;
 }
-
-vector<QString> StorageMock::doGetAllTitles(const QString&) const {
-    vector<QString> res;
-    for(int i = 0; i<accSize(); i++){
-       res.push_back(_storedAccs[i].company().title());
-    }
-    return res;
-}
-
 const Account& StorageMock::getDBAccaunt(const QString& searchedIban) const {
     for(int i = 0; i<accSize(); i++){
         if(_storedAccs[i].iban() == searchedIban)
