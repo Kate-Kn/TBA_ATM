@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->stackedWidget->setCurrentIndex(0);
     cryptor = new Cryptor();
-    storage = new Storage();
+    storage = new Storage(cryptor);
     auth = new Authorization(storage, cryptor);
     transactionService = new TransactionService(storage);
     QVector<QString> charityTitles= storage->getAllCharitiyTitles();
@@ -170,6 +170,63 @@ void MainWindow::on_see_clicked()
       ui->see->setText("See");
     }
 }
+void MainWindow::on_pushButton_10_clicked()
+{
+    if(!isVisible){
+      ui->oldPin->setText(oldPin);
+      ui->pushButton_10->setText("Hide");
+      isVisible=true;
+    }
+    else
+    {
+      isVisible=false;
+      QString str = "";
+      for(int i=0;i<oldPin.length();++i)
+      {
+          str+="*";
+      }
+      ui->oldPin->setText(str);
+      ui->pushButton_10->setText("See");
+    }
+}
+void MainWindow::on_pushButton_11_clicked()
+{
+    if(!isVisible){
+      ui->newPin->setText(newPin);
+      ui->pushButton_11->setText("Hide");
+      isVisible=true;
+    }
+    else
+    {
+      isVisible=false;
+      QString str = "";
+      for(int i=0;i<newPin.length();++i)
+      {
+          str+="*";
+      }
+      ui->newPin->setText(str);
+      ui->pushButton_11->setText("See");
+    }
+}
+void MainWindow::on_pushButton_12_clicked()
+{
+    if(!isVisible){
+      ui->newPinRepeat->setText(newPinRepeat);
+      ui->pushButton_12->setText("Hide");
+      isVisible=true;
+    }
+    else
+    {
+      isVisible=false;
+      QString str = "";
+      for(int i=0;i<newPinRepeat.length();++i)
+      {
+          str+="*";
+      }
+      ui->newPinRepeat->setText(str);
+      ui->pushButton_12->setText("See");
+    }
+}
 void MainWindow::on_pushButton_submit_clicked()
 {
     //check pin from database and value to isCorrect
@@ -178,23 +235,24 @@ void MainWindow::on_pushButton_submit_clicked()
     {
         try{
         authCard.pincode(ui->inputPin->toPlainText());
-        ui->stackedWidget->setCurrentIndex(2);
         }catch(AuthCard::BadAuthCard ba)
         {
             ui->errorPin->setText(ba.diagnose());
             return;
         }
         try{
+            if (! auth->checkAuthorizationData(authCard))
+            {
+              ui->errorPin->setText("Incorrect PIN or card. Try again");
+              return;
+            }
             card = auth->authorize(authCard);
+            ui->errorPin->setText("");
+            ui->stackedWidget->setCurrentIndex(2);
         }
         catch(IAuthorization::BadAuthorization ba)
         {
-            authCard = AuthCard();
-            if (! auth->checkAuthorizationData(authCard))
-            {
-              ui->errorPin->setText("Incorrect PIN for indicated card number. Try again");
-              return;
-            }
+            ui->errorPin->setText(ba.diagnose());
         }
         authCard = AuthCard();
     }else
@@ -212,12 +270,14 @@ void MainWindow::on_psubmit_clicked()
         try{
         authCard = AuthCard();
         authCard.cardNumber(ui->input->toPlainText());
-        ui->stackedWidget->setCurrentIndex(1);
-        balance = 1000000;
+
         }catch(AuthCard::BadAuthCard ba)
         {
             ui->errorCardNum->setText(ba.diagnose());
+            return;
         }
+        ui->stackedWidget->setCurrentIndex(1);
+        ui->p_error->setText("");
 
     }else
     {
@@ -230,6 +290,7 @@ void MainWindow::on_withdrawMoney2_clicked()
     ui->trT->setVisible(false);
     ui->stackedWidget->setCurrentIndex(3);
     ui->lastOpSuccess->setText("");
+    isTransferToFilled = true;
 }
 void MainWindow::on_moneyTransfer_clicked()
 {
@@ -242,6 +303,8 @@ void MainWindow::on_charityTransfer_clicked()
 {
     ui->stackedWidget->setCurrentIndex(6);
     ui->lastOpSuccess->setText("");
+    isCharityTransfer = true;
+    isTransferToFilled = true;
 }
 void MainWindow::pushButtonClicked()
 {
@@ -251,6 +314,7 @@ void MainWindow::pushButtonClicked()
     ui->charityMessage->setText("Transfer to: " + bu->text());
     ui->trT->setVisible(false);
     ui->stackedWidget->setCurrentIndex(3);
+    charity = bu->text();
 }
 void MainWindow::on_mobileTransfer_clicked()
 {
@@ -282,6 +346,8 @@ void MainWindow::on_pushButton_back_clicked()
     pin = "";
     cardNum = "";
     ui->stackedWidget->setCurrentIndex(0);
+    ui->input->setText("");
+    ui->inputPin->setText("");
 }
 void MainWindow::on_logOut_clicked()
 {
@@ -298,11 +364,14 @@ void MainWindow::on_bck_clicked()
     ui->trT->setVisible(true);
     ui->trT->setEnabled(true);
     ui->trT->setText("");
+    ui->p_error->setText("");
     ui->inputAmount->setText("");
     ui->charityMessage -> setText("");
     isMobileTransfer = false;
     isTransferToFilled = false;
     isCardTransfer = false;
+    isCharityTransfer = false;
+    ui->la_error->setText("");
 }
 void MainWindow::on_backBank_clicked()
 {
@@ -314,6 +383,10 @@ void MainWindow::on_p_back_clicked()
     ui->oldPin->setText("");
     ui->newPin->setText("");
     ui->newPinRepeat->setText("");
+    oldPin ="";
+    newPin ="";
+    newPinRepeat="";
+    ui->p_error->setText("");
 }
 void MainWindow::on_p0_clicked()
 {
@@ -369,42 +442,112 @@ void MainWindow::on_sbm_clicked()
 {
     if (isCardTransfer)
     {
-        bool isCorrectCard = true;
-        if(isCorrectCard)
+        Card toCard;
+        try
         {
-            bool isAmountAvailable = (ui->inputAmount->toPlainText().toInt() < balance);
-            if(isAmountAvailable)
-            {
-                ui->lastOpSuccess->setText("Transfer succeded");
-                 balance -= ui->inputAmount->toPlainText().toInt();
-                on_bck_clicked();
-            }else
-            {
-                ui->la_error->setText("Amount of money is not available");
-                ui->inputAmount->setText("");
-                checkTransferField();
-            }
-        }
-        else{
-            ui->la_error->setText("There is no such card");
-            ui->trT->setText("");
-            checkTransferField();
-        }
-    }else
-    {
-        //database check
-        bool isAmountAvailable = (ui->inputAmount->toPlainText().toInt() < balance);
-        if(isAmountAvailable)
+         toCard = storage->getCard(ui->trT->toPlainText());
+        }catch(IStorage::BadStorage bs)
         {
-            ui->lastOpSuccess->setText("Transfer succeded");
-            balance -= ui->inputAmount->toPlainText().toInt();
-            on_bck_clicked();
-        }else
-        {
-            ui->la_error->setText("Amount of money is not available");
+            ui->la_error->setText(bs.diagnose());
             ui->inputAmount->setText("");
             checkTransferField();
+            return;
         }
+        TransactionsCards transactionCard;
+        try{
+        transactionCard = TransactionsCards(ui->inputAmount->toPlainText().toInt(),QDate().currentDate(), "");
+        }catch(ITransaction::BadTransction bs)
+        {
+            ui->la_error->setText(bs.diagnose());
+            ui->inputAmount->setText("");
+            ui->trT->setText("");
+            checkTransferField();
+            return;
+        }
+        try
+        {
+           transactionService->transactionCards(transactionCard, card, toCard);
+        }catch(ITransactionService::BadTransactionService bs)
+        {
+            ui->la_error->setText(bs.diagnose());
+            ui->inputAmount->setText("");
+            checkTransferField();
+            return;
+        }
+         ui->lastOpSuccess->setText("Transfer succeded");
+         balance -= ui->inputAmount->toPlainText().toInt();
+         on_bck_clicked();
+    }
+    else if (isCharityTransfer)
+    {
+        Account toAccount;
+        try
+        {
+         toAccount = storage->getAccount(charity);
+        }catch(IStorage::BadStorage bs)
+        {
+            ui->la_error->setText(bs.diagnose());
+            ui->inputAmount->setText("");
+            checkTransferField();
+            return;
+        }
+        TransactionsCardAccount transactionAccount;
+        try{
+        transactionAccount = TransactionsCardAccount(ui->inputAmount->toPlainText().toInt(),QDate().currentDate(), "");
+        }catch(ITransaction::BadTransction bs)
+        {
+            ui->la_error->setText(bs.diagnose());
+            ui->inputAmount->setText("");
+            ui->trT->setText("");
+            checkTransferField();
+            return;
+        }
+        try
+        {
+           transactionService->transactionCardAccount(transactionAccount, card, toAccount);
+        }catch(ITransactionService::BadTransactionService bs)
+        {
+            ui->la_error->setText(bs.diagnose());
+            ui->inputAmount->setText("");
+            checkTransferField();
+            return;
+        }
+         ui->lastOpSuccess->setText("Transfer succeded");
+         balance -= ui->inputAmount->toPlainText().toInt();
+         on_bck_clicked();
+    }else
+    {
+        TransactionCash transactionCash;
+        try{
+        transactionCash = TransactionCash(ui->inputAmount->toPlainText().toInt(),QDate().currentDate());
+        }catch(ITransaction::BadTransction bs)
+        {
+            ui->la_error->setText(bs.diagnose());
+            ui->inputAmount->setText("");
+            if(isMobileTransfer)
+                 ui->trT->setText("0");
+            else
+                ui->trT->setText("");
+            checkTransferField();
+            return;
+        }
+        try
+        {
+           transactionService->transactionCash(transactionCash, card);
+        }catch(ITransactionService::BadTransactionService bs)
+        {
+            ui->la_error->setText(bs.diagnose());
+            if(isMobileTransfer)
+                 ui->trT->setText("0");
+            else
+                ui->trT->setText("");
+            ui->inputAmount->setText("");
+            checkTransferField();
+            return;
+        }
+         ui->lastOpSuccess->setText("Transfer succeded");
+         balance -= ui->inputAmount->toPlainText().toInt();
+         on_bck_clicked();
     }
 }
 void MainWindow::on_pu_0_clicked()
@@ -474,8 +617,11 @@ void MainWindow::on_pu_cA_clicked()
 {
     if(isTransferToFilled)
        ui->inputAmount->setText("");
+    else if (isMobileTransfer)
+       ui->trT->setText("0");
     else
         ui->trT->setText("");
+
 }
 
 void MainWindow::checkTransferField()
@@ -516,7 +662,6 @@ void MainWindow::caseTransfer(QString num)
 void MainWindow::on_back_clicked()
 {
     ui->stackedWidget->setCurrentIndex(2);
-    ui->p_error->setText("");
 }
 void MainWindow::changeField()
 {
@@ -537,12 +682,33 @@ void MainWindow::changeField()
 }
 void MainWindow::checkCase(QString str)
 {
-    if(!isFilledOld)
-        addNumber(str, ui->oldPin, 4);
-    else if(!isFilledNew)
-        addNumber(str, ui->newPin, 4);
-    else if(!isFilledNewRepeat)
-        addNumber(str, ui->newPinRepeat,4);
+    if(!isFilledOld){
+        if(isVisible)
+              on_pushButton_10_clicked();
+        if(ui->oldPin->toPlainText().length()< 4 )
+        {
+            oldPin+=str;
+        }
+        addNumber("*", ui->oldPin, 4);
+    }
+    else if(!isFilledNew){
+        if(isVisible)
+              on_pushButton_11_clicked();
+        if(ui->newPin->toPlainText().length()< 4 )
+        {
+            newPin+=str;
+        }
+        addNumber("*", ui->newPin, 4);
+    }
+    else if(!isFilledNewRepeat){
+        if(isVisible)
+              on_pushButton_12_clicked();
+        if(ui->newPinRepeat->toPlainText().length()< 4 )
+        {
+            newPinRepeat+=str;
+        }
+        addNumber("*", ui->newPinRepeat,4);
+    }
 }
 void MainWindow::on_p_1_clicked()
 {
@@ -598,30 +764,39 @@ void MainWindow::on_p_c_clicked()
 {
     if(!isFilledOld){
         QString current = ui->oldPin->toPlainText();
-        if (current.length()>0)
+        if (current.length()>0){
            ui->oldPin->setText(current.first(current.length() - 1));
+           oldPin = oldPin.first(oldPin.length() - 1);
+        }
     }
     else if(!isFilledNew){
         QString current = ui->newPin->toPlainText();
-        if (current.length()>0)
+        if (current.length()>0){
            ui->newPin->setText(current.first(current.length() - 1));
+           newPin = newPin.first(newPin.length() - 1);
+        }
     }
     else if(!isFilledNewRepeat){
         QString current = ui->newPinRepeat->toPlainText();
-        if (current.length()>0)
+        if (current.length()>0){
            ui->newPinRepeat->setText(current.first(current.length() - 1));
+           newPinRepeat = newPinRepeat.first(newPinRepeat.length() - 1);
+        }
     }
 }
 void MainWindow::on_p_c_a_clicked()
 {
     if(!isFilledOld){
         ui->oldPin->setText("");
+        oldPin ="";
     }
     else if(!isFilledNew){
         ui->newPin->setText("");
+        newPin ="";
     }
     else if(!isFilledNewRepeat){
         ui->newPinRepeat->setText("");
+        newPinRepeat ="";
     }
 }
 void MainWindow::on_p_submit_clicked()
@@ -674,5 +849,8 @@ void MainWindow::clearPins()
     ui->oldPin->setText("");
     ui->newPin->setText("");
     ui->newPinRepeat->setText("");
+    oldPin = "";
+    newPin ="";
+    newPinRepeat ="";
     changeField();
 }

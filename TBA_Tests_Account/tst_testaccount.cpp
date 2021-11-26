@@ -3,6 +3,7 @@
 #include "AccountType.h"
 #include "Company.h"
 #include <string>
+#include "Currency.h"
 using namespace std;
 
 class TestAccount : public QObject
@@ -31,22 +32,24 @@ TestAccount::~TestAccount()
 
 void TestAccount::test_correct_account()
 {
-    AccountType accType ("chatuty");
+    Currency grivna("UAH", 1);
+    AccountType accType ("charity", "");
     Company accCompany ("Test", "description");
     try{
-            Account correct("0345", "description", accCompany, accType);
+            Account correct("0345", "description", accCompany, accType, grivna);
     }catch (Account::BadAccount ba){
-        QVERIFY2(false, ba.diagnose().c_str());
+        QVERIFY2(false, ba.diagnose().toStdString().c_str());
     }
 }
 
 void TestAccount::test_account_ibn_wrong_length()
 {
+    Currency grivna("UAH", 1);
     bool catchErr = false;
-    AccountType accType ("chatuty");
+    AccountType accType ("charity", "");
     Company accCompany ("Test", "description");
     try{
-            Account correct("03454", "description", accCompany, accType);
+            Account correct("03454", "description", accCompany, accType, grivna);
     }catch (Account::BadAccount ba){
         catchErr = true;
     }
@@ -56,11 +59,12 @@ void TestAccount::test_account_ibn_wrong_length()
 
 void TestAccount::test_account_ibn_contains_not_num()
 {
+    Currency grivna("UAH", 1);
     bool catchErr = false;
-    AccountType accType ("chatuty");
+    AccountType accType ("charity", "");
     Company accCompany ("Test", "description");
     try{
-            Account correct("0r54", "description", accCompany, accType);
+            Account correct("0r54", "description", accCompany, accType, grivna);
     }catch (Account::BadAccount ba){
         catchErr = true;
     }

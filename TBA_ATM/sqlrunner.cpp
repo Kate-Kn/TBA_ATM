@@ -5,7 +5,7 @@ void SqlRunner::addTransactionCardAccount(const QString id, const QString sum, c
                                           const QString passport_num, const QString iban, const QString comp_id,
                                           const QString type, const QString acc_currency) {
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("C:/Users/aanos/TBA_ATM/sql/add_transaction_card_account.sql");
+    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/add_transaction_card_account.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -39,7 +39,7 @@ void SqlRunner::addTransactionCards(const QString id, const QString sum, const Q
                                           const QString card1_passport_num, const QString card2_num, const QString card2_currency,
                                     const QString card2_passport_num) {
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("C:/Users/aanos/TBA_ATM/sql/add_transaction_cards.sql");
+    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/add_transaction_cards.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -72,7 +72,7 @@ void SqlRunner::addTransactionCash(const QString id, const QString sum, const QS
                                    const QString desc, const QString card_num, const QString card_currency,
                                    const QString card_passport_num) {
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("C:/Users/aanos/TBA_ATM/sql/add_transaction_cash.sql");
+    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/add_transaction_cash.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -107,7 +107,7 @@ Account SqlRunner::getAccount(const QString iban) {
     Currency curr;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("C:/Users/aanos/TBA_ATM/sql/getAccount.sql");
+    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/getAccount.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -138,7 +138,7 @@ Account SqlRunner::getAccountByName(const QString name) {
     Currency curr;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("C:/Users/aanos/TBA_ATM/sql/getAccount_by_name.sql");
+    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/getAccount_by_name.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -147,7 +147,7 @@ Account SqlRunner::getAccountByName(const QString name) {
             queryTxt.replace('\n', ' ');
             queryTxt.replace('\r', ' ');
             query.prepare(queryTxt);
-            query.bindValue(":acc_name", name);
+            query.bindValue(":acc_name",name);
             if (!query.exec())
                 qFatal("Hello");
             while (query.next()) {
@@ -166,7 +166,7 @@ User SqlRunner::getUser(const QString passport_num) {
     QString name, surname;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("C:/Users/aanos/TBA_ATM/sql/getUser.sql");
+    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/getUser.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -195,7 +195,7 @@ Card SqlRunner::getCard(const int card_num) {
     Currency currency;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("C:/Users/aanos/TBA_ATM/sql/isValidCard.sql");
+    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/isValidCard.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -226,7 +226,7 @@ Card SqlRunner::pinValidaton(const int card_num, const QString pin) {
     Currency currency;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("C:/Users/aanos/TBA_ATM/sql/isValidPin.sql");
+    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/isValidPin.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -255,7 +255,7 @@ bool SqlRunner::checkCard(const QString card_num, const QString pin) {
     QSqlQuery query;
     bool flag = false;
 
-    QStringList scriptQueries = file_to_list("C:/Users/aanos/TBA_ATM/sql/isValidPin.sql");
+    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/isValidPin.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -282,7 +282,7 @@ QVector<QString> SqlRunner::getCharities() {
     QVector<QString> res;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("C:/Users/aanos/TBA_ATM/sql/select_charity_accounts.sql");
+    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/select_charity_accounts.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -306,7 +306,7 @@ QVector<QString> SqlRunner::fullnameByCard(const QString card_num) {
     QVector<QString> res;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("C:/Users/aanos/TBA_ATM/sql/select_fullname_by_card.sql");
+    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/select_fullname_by_card.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -330,7 +330,7 @@ QVector<TransactionsCards> SqlRunner::selectTransactionCards(const QString card_
     QVector<TransactionsCards> res;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("C:/Users/aanos/TBA_ATM/sql/select_transaction_cards.sql");
+    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/select_transaction_cards.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -357,7 +357,7 @@ QVector<TransactionsCardAccount> SqlRunner::selectTransactionsCardAccount(const 
     QVector<TransactionsCardAccount> res;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("C:/Users/aanos/TBA_ATM/sql/select_transaction_card_account.sql");
+    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/select_transaction_card_account.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -383,7 +383,7 @@ QVector<TransactionCash> SqlRunner::selectTransactionCash(const QString card_num
     QVector<TransactionCash> res;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("C:/Users/aanos/TBA_ATM/sql/select_transaction_cash.sql");
+    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/select_transaction_cash.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -407,7 +407,7 @@ QVector<TransactionCash> SqlRunner::selectTransactionCash(const QString card_num
 
 void SqlRunner::changePassword(const QString card_num, const QString pin) {
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("C:/Users/aanos/TBA_ATM/sql/change_password.sql");
+    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/change_password.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
