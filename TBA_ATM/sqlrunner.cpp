@@ -147,7 +147,7 @@ Account SqlRunner::getAccountByName(const QString name) {
             queryTxt.replace('\n', ' ');
             queryTxt.replace('\r', ' ');
             query.prepare(queryTxt);
-            query.bindValue(":acc_name", name);
+            query.bindValue(":acc_name",name);
             if (!query.exec())
                 qFatal("Hello");
             while (query.next()) {

@@ -45,6 +45,8 @@ private:
     QString newPinRepeat = "";
     bool isMobileTransfer = false;
     bool isCardTransfer = false;
+    bool isCharityTransfer = false;
+    QString charity = "";
     void addNumber(QString str, QTextBrowser *widget, int len);
     void changeField();
     void checkCase(QString num);
@@ -130,6 +132,9 @@ private slots:
 
     //change pin window
     void on_p_back_clicked();
+    void on_pushButton_10_clicked();
+    void on_pushButton_11_clicked();
+    void on_pushButton_12_clicked();
 
     //charity enumeration window
     void on_back_clicked();

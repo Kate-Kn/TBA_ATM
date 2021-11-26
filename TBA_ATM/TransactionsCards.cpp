@@ -3,7 +3,7 @@
 TransactionsCards::TransactionsCards(double sum, QDate date, QString description):
 ITransaction(sum, date), _description(description){
     if (sum <= 0)
-        throw BadTransction("Sum must be grater than 0.");
+        throw BadTransction("Sum must be greater than 0.");
     return;
 }
 
