@@ -13,9 +13,11 @@ MainWindow::MainWindow(QWidget *parent)
     storage = new Storage(cryptor);
     auth = new Authorization(storage, cryptor);
     transactionService = new TransactionService(storage);
+    charityButton;
     charityAcc = storage->getAllCharitiyTitles();
-    for(QString key: charityAcc.keys()){
-        QPushButton *pushButton = new QPushButton(charityAcc.take(key));
+    for(QString k: charityAcc.keys()){
+        QPushButton *pushButton = new QPushButton(charityAcc.take(k));
+        charityButton.insert(k, pushButton.);
         ui->gridLayout->addWidget(pushButton);
         this->connect(pushButton, SIGNAL( clicked() ), this, SLOT(pushButtonClicked()));
     }

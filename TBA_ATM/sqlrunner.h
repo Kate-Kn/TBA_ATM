@@ -52,7 +52,7 @@ public:
     Card getCard(const int card_num);
     Card pinValidaton(const int card_num, const QString pin);
 
-    QVector<QString> getCharities();
+    QMap<QString, QString> getCharities();
     QVector<QString> fullnameByCard(const QString card_num);
 
     void increaseBalance_card(const QString balance, const QString card_num);

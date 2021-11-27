@@ -330,7 +330,7 @@ bool SqlRunner::checkCard(const QString card_num, const QString pin) {
 
 
 
-QVector<QString> SqlRunner::getCharities() {
+QMap<QString, QString> SqlRunner::getCharities() {
     QVector<QString> res;
 
     QSqlQuery query;

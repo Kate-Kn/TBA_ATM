@@ -40,10 +40,10 @@ User Storage::doGetUser(const QString& passport_num) const{
 }
 Account Storage::doGetAccount(const QString& acc_name) const{
     SqlRunner runner;
-    return runner.getAccountByCompanyName(acc_name);
+    return runner.getAccount(acc_name);
 }
 
-QVector<Account> Storage::doGetAllCharitiyTitles() const{
+QMap<QString, QString> Storage::doGetAllCharitiyTitles() const{
     SqlRunner runner;
     return runner.getCharities();
 }

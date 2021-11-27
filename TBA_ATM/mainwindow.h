@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTextBrowser>
+#include <qpushbutton.h>
 #include "AuthCard.h"
 #include "Card.h"
 #include "TransactionService.h"
@@ -31,6 +32,7 @@ private:
     ITransactionService* transactionService;
     ICryptor* cryptor;
     IStorage* storage;
+    QMap<QString, QString> charityAcc;
 
     QString cardNum = "";
     QString pin = "";
