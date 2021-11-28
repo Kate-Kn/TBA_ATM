@@ -58,6 +58,7 @@ public:
     void increaseBalance_card(const QString balance, const QString card_num);
     void increaseBalance_account(const QString balance, const QString iban);
 
+    double getCurrencyRate(const QString name);
 
     QVector<TransactionCash> selectTransactionCash(const QString card_num);
     QVector<TransactionsCards> selectTransactionCards(const QString card_from_num, const QString card_to_num);
