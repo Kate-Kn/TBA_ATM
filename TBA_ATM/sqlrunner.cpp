@@ -1,20 +1,20 @@
 #include "sqlrunner.h"
 
-void SqlRunner::addTransactionCardAccount(const QString id, const QString sum, const QString date,
+void SqlRunner::addTransactionCardAccount(const QString sum, const QString date,
                                           const QString desc, const QString card_num, const QString currency,
                                           const QString passport_num, const QString iban, const QString comp_id,
                                           const QString type, const QString acc_currency) {
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/add_transaction_card_account.sql");
+    QStringList scriptQueries = file_to_list("../sql/add_transaction_card_account.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
             if (queryTxt.isEmpty())
                 continue;
             queryTxt.replace('\n', ' ');
+            queryTxt.replace('\r', ' ');
             query.prepare(queryTxt);
-            query.bindValue(":id", id.toInt());
-            query.bindValue(":sum", sum.toDouble());
+            query.bindValue(":transaction_sum", sum.toDouble());
             query.bindValue(":transaction_date", date);
             query.bindValue(":transaction_description", desc);
             query.bindValue(":card_card_num", card_num.toInt());
@@ -34,29 +34,29 @@ void SqlRunner::addTransactionCardAccount(const QString id, const QString sum, c
     }
 }
 
-void SqlRunner::addTransactionCards(const QString id, const QString sum, const QString date,
+void SqlRunner::addTransactionCards(const QString sum, const QString date,
                                           const QString desc, const QString card1_num, const QString card1_currency,
                                           const QString card1_passport_num, const QString card2_num, const QString card2_currency,
                                     const QString card2_passport_num) {
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/add_transaction_cards.sql");
+    QStringList scriptQueries = file_to_list("../sql/add_transaction_cards.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
             if (queryTxt.isEmpty())
                 continue;
             queryTxt.replace('\n', ' ');
+             queryTxt.replace('\r', ' ');
             query.prepare(queryTxt);
-            query.bindValue(":id", id.toInt());
             query.bindValue(":transaction_sum", sum.toDouble());
             query.bindValue(":transaction_date", date);
             query.bindValue(":transaction_description", desc);
-            query.bindValue(":card1_card_num", card1_num.toInt());
-            query.bindValue(":card1_currency_name", card1_currency);
-            query.bindValue(":card1_user_passport_num", card1_passport_num);
-            query.bindValue(":card2_card_num", card2_num.toInt());
-            query.bindValue(":card2_currency_name", card2_currency);
-            query.bindValue(":card2_user_passport_num", card2_passport_num);
+            query.bindValue(":card_card_from", card1_num.toInt());
+            query.bindValue(":card_currency_from", card1_currency);
+            query.bindValue(":card_user_passport_from", card1_passport_num);
+            query.bindValue(":card_card_to", card2_num.toInt());
+            query.bindValue(":card_currency_to", card2_currency);
+            query.bindValue(":card_user_passport_to", card2_passport_num);
                if (!query.exec())
                 qFatal("Hello");
             while (query.next()) {
@@ -68,19 +68,19 @@ void SqlRunner::addTransactionCards(const QString id, const QString sum, const Q
 }
 
 
-void SqlRunner::addTransactionCash(const QString id, const QString sum, const QString date,
+void SqlRunner::addTransactionCash(const QString sum, const QString date,
                                    const QString desc, const QString card_num, const QString card_currency,
                                    const QString card_passport_num) {
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/add_transaction_cash.sql");
+    QStringList scriptQueries = file_to_list("../sql/add_transaction_cash.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
             if (queryTxt.isEmpty())
                 continue;
             queryTxt.replace('\n', ' ');
+             queryTxt.replace('\r', ' ');
             query.prepare(queryTxt);
-            query.bindValue(":id", id.toInt());
             query.bindValue(":transaction_sum", sum.toDouble());
             query.bindValue(":transaction_date", date);
             query.bindValue(":transaction_description", desc);
@@ -107,7 +107,7 @@ Account SqlRunner::getAccount(const QString iban) {
     Currency curr;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/getAccount.sql");
+    QStringList scriptQueries = file_to_list("../sql/getAccount.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -123,22 +123,23 @@ Account SqlRunner::getAccount(const QString iban) {
                  name = query.value(1).toString();
                  comp = Company(query.value(2).toString(), "");
                  type = AccountType(query.value(3).toString(), "");
-                 curr = Currency(query.value(4).toString(), 0.1);
+                 curr = Currency(query.value(4).toString(), getCurrencyRate(query.value(4).toString()));
              }
             query.finish();
     }
     return Account(iban, name, comp, type, curr);
 }
 
-Account SqlRunner::getAccountByName(const QString name) {
+Account SqlRunner::getAccountByCompanyName(const QString title) {
     Account res;
     QString iban;
+    QString name;
     Company comp;
     AccountType type;
     Currency curr;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/getAccount_by_name.sql");
+    QStringList scriptQueries = file_to_list("../sql/getAccount_by_company_name.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -147,26 +148,54 @@ Account SqlRunner::getAccountByName(const QString name) {
             queryTxt.replace('\n', ' ');
             queryTxt.replace('\r', ' ');
             query.prepare(queryTxt);
-            query.bindValue(":acc_name",name);
+            query.bindValue(":title",title);
             if (!query.exec())
                 qFatal("Hello");
             while (query.next()) {
                  iban = query.value(0).toString();
+                 name= query.value(1).toString();
                  comp = Company(query.value(2).toString(), "");
                  type = AccountType(query.value(3).toString(), "");
-                 curr = Currency(query.value(4).toString(), 0.1);
+                 curr = Currency(query.value(4).toString(), getCurrencyRate(query.value(4).toString()));
              }
             query.finish();
     }
     return Account(iban, name, comp, type, curr);
 }
 
+QString SqlRunner::getAccountCompany_by_iban(const QString iban) {
+    QString company_id;
+
+    QSqlQuery query;
+    QStringList scriptQueries = file_to_list("../sql/getAccountCompany_by_iban.sql");
+    foreach (QString queryTxt, scriptQueries)
+    {
+            queryTxt = queryTxt.trimmed();
+            if (queryTxt.isEmpty())
+                continue;
+            queryTxt.replace('\n', ' ');
+            queryTxt.replace('\r', ' ');
+            query.prepare(queryTxt);
+            query.bindValue(":iban",iban);
+            if (!query.exec())
+                qFatal("Hello");
+            while (query.next()) {
+                 company_id = query.value(0).toString();
+             }
+            query.finish();
+    }
+    return company_id;
+}
+
+
+
+
 
 User SqlRunner::getUser(const QString passport_num) {
     QString name, surname;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/getUser.sql");
+    QStringList scriptQueries = file_to_list("../sql/getUser.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -187,6 +216,29 @@ User SqlRunner::getUser(const QString passport_num) {
     return User(name, surname);
 }
 
+QString SqlRunner::getUserPassport_by_card(const QString card_num) {
+    QString passport_num;
+    QSqlQuery query;
+    QStringList scriptQueries = file_to_list("../sql/getUserPassport_by_card.sql");
+    foreach (QString queryTxt, scriptQueries)
+    {
+            queryTxt = queryTxt.trimmed();
+            if (queryTxt.isEmpty())
+                continue;
+            queryTxt.replace('\n', ' ');
+            queryTxt.replace('\r', ' ');
+            query.prepare(queryTxt);
+            query.bindValue(":card_num", card_num);
+            if (!query.exec())
+                qFatal("Hello");
+            while (query.next()) {
+                 passport_num = query.value(0).toString();
+             }
+            query.finish();
+    }
+    return passport_num;
+}
+
 
 Card SqlRunner::getCard(const int card_num) {
     QString cardNumber;
@@ -195,7 +247,7 @@ Card SqlRunner::getCard(const int card_num) {
     Currency currency;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/isValidCard.sql");
+    QStringList scriptQueries = file_to_list("../sql/isValidCard.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -211,7 +263,7 @@ Card SqlRunner::getCard(const int card_num) {
                cardNumber = query.value(0).toString();
                balance = query.value(3).toDouble();
                user = getUser(query.value(5).toString());
-               currency = Currency(query.value(4).toString(), 0.1);
+               currency = Currency(query.value(4).toString(), getCurrencyRate(query.value(4).toString()));
                qDebug() << cardNumber << balance;
              }
             query.finish();
@@ -226,7 +278,7 @@ Card SqlRunner::pinValidaton(const int card_num, const QString pin) {
     Currency currency;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/isValidPin.sql");
+    QStringList scriptQueries = file_to_list("../sql/isValidPin.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -243,7 +295,7 @@ Card SqlRunner::pinValidaton(const int card_num, const QString pin) {
                cardNumber = query.value(0).toString();
                balance = query.value(3).toDouble();
                user = getUser(query.value(5).toString());
-               currency = Currency(query.value(4).toString(), 0.1);
+               currency = Currency(query.value(4).toString(), getCurrencyRate(query.value(4).toString()));
                qDebug() << cardNumber << balance;
              }
             query.finish();
@@ -255,7 +307,7 @@ bool SqlRunner::checkCard(const QString card_num, const QString pin) {
     QSqlQuery query;
     bool flag = false;
 
-    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/isValidPin.sql");
+    QStringList scriptQueries = file_to_list("../sql/isValidPin.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -278,11 +330,11 @@ bool SqlRunner::checkCard(const QString card_num, const QString pin) {
 
 
 
-QVector<QString> SqlRunner::getCharities() {
-    QVector<QString> res;
+QMap<QString, QString> SqlRunner::getCharities() {
+    QMap<QString,QString> res;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/select_charity_accounts.sql");
+    QStringList scriptQueries = file_to_list("../sql/select_charity_accounts.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -294,7 +346,8 @@ QVector<QString> SqlRunner::getCharities() {
             if (!query.exec())
                 qFatal("Hello");
             while (query.next()) {
-               res.append(query.value(0).toString());
+                res.insert(query.value(0).toString(),query.value(1).toString());
+
             }
             query.finish();
     }
@@ -306,7 +359,7 @@ QVector<QString> SqlRunner::fullnameByCard(const QString card_num) {
     QVector<QString> res;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/select_fullname_by_card.sql");
+    QStringList scriptQueries = file_to_list("../sql/select_fullname_by_card.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -330,7 +383,7 @@ QVector<TransactionsCards> SqlRunner::selectTransactionCards(const QString card_
     QVector<TransactionsCards> res;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/select_transaction_cards.sql");
+    QStringList scriptQueries = file_to_list("../sql/select_transaction_cards.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -357,7 +410,7 @@ QVector<TransactionsCardAccount> SqlRunner::selectTransactionsCardAccount(const 
     QVector<TransactionsCardAccount> res;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/select_transaction_card_account.sql");
+    QStringList scriptQueries = file_to_list("../sql/select_transaction_card_account.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -383,7 +436,7 @@ QVector<TransactionCash> SqlRunner::selectTransactionCash(const QString card_num
     QVector<TransactionCash> res;
 
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/select_transaction_cash.sql");
+    QStringList scriptQueries = file_to_list("../sql/select_transaction_cash.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -407,7 +460,7 @@ QVector<TransactionCash> SqlRunner::selectTransactionCash(const QString card_num
 
 void SqlRunner::changePassword(const QString card_num, const QString pin) {
     QSqlQuery query;
-    QStringList scriptQueries = file_to_list("D:/TBA_ATM/sql/change_password.sql");
+    QStringList scriptQueries = file_to_list("../sql/change_password.sql");
     foreach (QString queryTxt, scriptQueries)
     {
             queryTxt = queryTxt.trimmed();
@@ -425,6 +478,74 @@ void SqlRunner::changePassword(const QString card_num, const QString pin) {
     }
     return;
 }
+
+
+void SqlRunner::increaseBalance_card(const QString balance, const QString card_num) {
+    QSqlQuery query;
+    QStringList scriptQueries = file_to_list("../sql/increaseBalance_card.sql");
+    foreach (QString queryTxt, scriptQueries)
+    {
+            queryTxt = queryTxt.trimmed();
+            if (queryTxt.isEmpty())
+                continue;
+            queryTxt.replace('\n', ' ');
+            queryTxt.replace('\r', ' ');
+            qDebug() << queryTxt;
+            query.prepare(queryTxt);
+            query.bindValue(":balance", balance.toDouble());
+            query.bindValue(":card_num", card_num.toInt());
+            if (!query.exec())
+                qFatal("Hello");
+            query.finish();
+    }
+    return;
+}
+
+void SqlRunner::increaseBalance_account(const QString balance, const QString iban) {
+    QSqlQuery query;
+    QStringList scriptQueries = file_to_list("../sql/increaseBalance_account.sql");
+    foreach (QString queryTxt, scriptQueries)
+    {
+            queryTxt = queryTxt.trimmed();
+            if (queryTxt.isEmpty())
+                continue;
+            queryTxt.replace('\n', ' ');
+            queryTxt.replace('\r', ' ');
+            qDebug() << queryTxt;
+            query.prepare(queryTxt);
+            query.bindValue(":balance", balance.toDouble());
+            query.bindValue(":iban", iban);
+            if (!query.exec())
+                qFatal("Hello");
+            query.finish();
+    }
+    return;
+}
+
+double SqlRunner::getCurrencyRate(const QString name){
+    double rate;
+
+    QSqlQuery query;
+    QStringList scriptQueries = file_to_list("../sql/getCurrencyRate.sql");
+    foreach (QString queryTxt, scriptQueries)
+    {
+            queryTxt = queryTxt.trimmed();
+            if (queryTxt.isEmpty())
+                continue;
+            queryTxt.replace('\n', ' ');
+            queryTxt.replace('\r', ' ');
+            query.prepare(queryTxt);
+            query.bindValue(":name", name);
+            if (!query.exec())
+                qFatal("Hello");
+            while (query.next()) {
+               rate = query.value(0).toDouble();
+             }
+            query.finish();
+    }
+    return rate;
+}
+
 
 
 const QStringList SqlRunner::file_to_list(const QString script_path) {

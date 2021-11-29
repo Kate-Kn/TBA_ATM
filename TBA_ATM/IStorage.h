@@ -7,7 +7,8 @@
 #include "Account.h"
 #include "AuthCard.h"
 #include "User.h"
-#include <QVector>
+#include <QMap>
+
 class IStorage{
 private:
     virtual void doAddTransactionCardAccount(const TransactionsCardAccount&, const Card&, const Account&) = 0;
@@ -17,7 +18,7 @@ private:
     virtual Card doGetCard(const QString&) const = 0;
     virtual User doGetUser(const QString&) const = 0;
     virtual Account doGetAccount(const QString&) const = 0;
-    virtual QVector<QString> doGetAllCharitiyTitles() const = 0;
+    virtual QMap<QString, QString> doGetAllCharitiyTitles() const = 0;
     virtual void doChangePassword(const Card& card, const QString& pin) =0;
 public:
     class BadStorage;
@@ -35,9 +36,10 @@ public:
         return doGetCard(cardNum);}
     User getUser(const QString& passportNum) const{
         return doGetUser(passportNum); }
+
     Account getAccount(const QString& iban) const{
         return doGetAccount(iban); }
-    QVector<QString> getAllCharitiyTitles() const { return doGetAllCharitiyTitles(); }
+    QMap<QString, QString> getAllCharitiyTitles() const { return doGetAllCharitiyTitles(); }
     void changePassword(const Card& card, const QString& pin)
     {
         doChangePassword(card, pin);

@@ -3,19 +3,28 @@
 
 void Storage::doAddTransactionCardAccount(const TransactionsCardAccount& transaction, const Card& card, const Account& account) {
     SqlRunner runner;
-    return runner.addTransactionCardAccount(0,QString::number(transaction.sum()),transaction.date().toString(),transaction.description(), card.cardNumber(),card.currency().name(),card.user().surname(),
-                                            account.iban(),account.company().title(),account.type().name(),account.currency().name() );
-}//id transaction, card.user, account.company
+
+    runner.increaseBalance_card(QString::number(-transaction.sum()*card.currency().rateUAH()), card.cardNumber());
+    runner.increaseBalance_account(QString::number(transaction.sum()*account.currency().rateUAH()), account.iban());
+    return runner.addTransactionCardAccount(QString::number(transaction.sum()),transaction.date().toString("dd.MM.yyyy"),transaction.description(), card.cardNumber(),card.currency().name(), runner.getUserPassport_by_card(card.cardNumber()),
+                                            account.iban(),runner.getAccountCompany_by_iban(account.iban()),account.type().name(),account.currency().name() );
+}
+
 void Storage::doAddTransactionCash(const TransactionCash& transaction, const Card& card) {
     SqlRunner runner;
-    return runner.addTransactionCash(0,QString::number(transaction.sum()),transaction.date().toString(), "", card.cardNumber(),card.currency().name(),card.user().surname());
-}//id transaction, card.user, account.company
+    runner.increaseBalance_card(QString::number(-transaction.sum()*card.currency().rateUAH()), card.cardNumber());
+    return runner.addTransactionCash(QString::number(transaction.sum()),transaction.date().toString("dd.MM.yyyy"), "", card.cardNumber(),card.currency().name(), runner.getUserPassport_by_card(card.cardNumber()));
+}
 
 void Storage::doAddTransactionCards(const TransactionsCards& transaction, const Card& card1, const Card& card2) {
     SqlRunner runner;
-    return runner.addTransactionCards(0,QString::number(transaction.sum()),transaction.date().toString(),transaction.description(), card1.cardNumber(),card1.currency().name(),card1.user().surname(),
-                                            card2.cardNumber(),card2.currency().name(),card2.user().surname());
-}//id transaction, card1.user, card2.user
+    runner.increaseBalance_card(QString::number(-transaction.sum()*card1.currency().rateUAH()), card1.cardNumber());
+    runner.increaseBalance_card(QString::number( transaction.sum()*card2.currency().rateUAH()), card2.cardNumber());
+    return runner.addTransactionCards(QString::number(transaction.sum()),transaction.date().toString("dd.MM.yyyy"),transaction.description(), card1.cardNumber(),card1.currency().name(), runner.getUserPassport_by_card(card1.cardNumber()),
+                                            card2.cardNumber(),card2.currency().name(), runner.getUserPassport_by_card(card2.cardNumber()));
+}
+
+
 
 bool Storage::doCheckAuthCard(const AuthCard& card) const{
     SqlRunner runner;
@@ -31,10 +40,10 @@ User Storage::doGetUser(const QString& passport_num) const{
 }
 Account Storage::doGetAccount(const QString& acc_name) const{
     SqlRunner runner;
-    return runner.getAccountByName(acc_name);
+    return runner.getAccount(acc_name);
 }
 
-QVector<QString> Storage::doGetAllCharitiyTitles() const{
+QMap<QString, QString> Storage::doGetAllCharitiyTitles() const{
     SqlRunner runner;
     return runner.getCharities();
 }

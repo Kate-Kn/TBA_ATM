@@ -13,12 +13,13 @@ MainWindow::MainWindow(QWidget *parent)
     storage = new Storage(cryptor);
     auth = new Authorization(storage, cryptor);
     transactionService = new TransactionService(storage);
-    QVector<QString> charityTitles= storage->getAllCharitiyTitles();
-    for(int i=0;i<charityTitles.length();++i){
-        QPushButton *pushButton = new QPushButton(charityTitles.at(i));
-        ui->gridLayout->addWidget(pushButton);
-        this->connect(pushButton, SIGNAL( clicked() ), this, SLOT(pushButtonClicked()));
-    }
+    charityAcc = storage->getAllCharitiyTitles();
+        foreach (QString k, charityAcc.keys()){
+            QPushButton *pushButton = new QPushButton(charityAcc.take(k));
+            pushButton->setObjectName(k);
+            ui->gridLayout->addWidget(pushButton);
+            this->connect(pushButton, SIGNAL( clicked() ), this, SLOT(pushButtonClicked()));
+        }
 }
 
 MainWindow::~MainWindow()
@@ -314,7 +315,7 @@ void MainWindow::pushButtonClicked()
     ui->charityMessage->setText("Transfer to: " + bu->text());
     ui->trT->setVisible(false);
     ui->stackedWidget->setCurrentIndex(3);
-    charity = bu->text();
+    charity = bu->objectName();
 }
 void MainWindow::on_mobileTransfer_clicked()
 {

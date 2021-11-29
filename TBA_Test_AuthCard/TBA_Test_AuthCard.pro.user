@@ -67,7 +67,18 @@
     <value type="bool" key="AutoTest.Framework.QtQuickTest">true</value>
     <value type="bool" key="AutoTest.Framework.QtTest">true</value>
    </valuemap>
-   <valuemap type="QVariantMap" key="AutoTest.CheckStates"/>
+   <valuemap type="QVariantMap" key="AutoTest.CheckStates">
+    <value type="Qt::CheckState" key="1@C:/try3/TBA_ATM/TBA_Test_AuthCard/tst_testauthcard.cpp:TestAuthCard">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/try3/TBA_ATM/TBA_Test_AuthCard/tst_testauthcard.cpp:test_authCard_card_contains_not_num">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/try3/TBA_ATM/TBA_Test_AuthCard/tst_testauthcard.cpp:test_authCard_card_wrong_length">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/try3/TBA_ATM/TBA_Test_AuthCard/tst_testauthcard.cpp:test_authCard_pincode_contains_not_num">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/try3/TBA_ATM/TBA_Test_AuthCard/tst_testauthcard.cpp:test_authCard_pincode_wrong_length">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/try3/TBA_ATM/TBA_Test_AuthCard/tst_testauthcard.cpp:test_correct_authCard">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/try4/TBA_ATM/TBA_Test_AuthCard/tst_testauthcard.cpp:TestAuthCard">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/try4/TBA_ATM/TBA_Test_AuthCard/tst_testauthcard.cpp:test_authCard_card_contains_not_num">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/try4/TBA_ATM/TBA_Test_AuthCard/tst_testauthcard.cpp:test_authCard_card_wrong_length">Checked</value>
+    <value type="Qt::CheckState" key="1@C:/try4/TBA_ATM/TBA_Test_AuthCard/tst_testauthcard.cpp:test_correct_authCard">Checked</value>
+   </valuemap>
    <value type="int" key="AutoTest.RunAfterBuild">0</value>
    <value type="bool" key="AutoTest.UseGlobal">true</value>
    <valuelist type="QVariantList" key="ClangCodeModel.CustomCommandLineKey">
@@ -237,8 +248,10 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.CustomExecutableRunConfiguration</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey"></value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">TBA_Test_AuthCard2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:C:/try4/TBA_ATM/TBA_Test_AuthCard/TBA_Test_AuthCard.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/try4/TBA_ATM/TBA_Test_AuthCard/TBA_Test_AuthCard.pro</value>
+
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
