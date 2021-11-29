@@ -69,7 +69,7 @@ private:
     virtual Card doGetCard(const QString&) const override;
     virtual User doGetUser(const QString&) const override;
     virtual Account doGetAccount(const QString&) const override;
-    virtual QVector<QString> doGetAllCharitiyTitles() const override;
+    virtual QMap<QString, QString> doGetAllCharitiyTitles() const override;
     StorageMock(const StorageMock&) = delete;
     const Account& getDBAccaunt(const QString&) const;
     const DBCardMock& getDBCard(const QString&) const;
@@ -172,11 +172,11 @@ Account StorageMock::doGetAccount(const QString& searchedIban) const {
 }
 
 
-QVector<QString> StorageMock::doGetAllCharitiyTitles() const {
-    QVector<QString> res;
+QMap<QString, QString> StorageMock::doGetAllCharitiyTitles() const {
+    QMap<QString, QString> res;
     for(int i = 0; i<accSize(); i++){
         if(_storedAccs[i].type().name().toStdString() == "charity")
-            res.push_back(_storedAccs[i].company().title());
+            res.insert(_storedAccs[i].iban(), _storedAccs[i].company().title());
     }
     return res;
 }
