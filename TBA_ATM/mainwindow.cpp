@@ -235,7 +235,7 @@ void MainWindow::on_pushButton_submit_clicked()
     if(isCorrect)
     {
         try{
-        authCard.pincode(ui->inputPin->toPlainText());
+        authCard.pincode(pin);
         }catch(AuthCard::BadAuthCard ba)
         {
             ui->errorPin->setText(ba.diagnose());
@@ -348,6 +348,7 @@ void MainWindow::on_pushButton_back_clicked()
     cardNum = "";
     ui->stackedWidget->setCurrentIndex(0);
     ui->input->setText("");
+    ui->errorPin->setText("");
     ui->inputPin->setText("");
 }
 void MainWindow::on_logOut_clicked()
@@ -441,6 +442,14 @@ void MainWindow::on_pca_clicked()
 }
 void MainWindow::on_sbm_clicked()
 {
+    card = storage->getCard(card.cardNumber());
+    if (ui->inputAmount->toPlainText().toInt() > card.balance())
+    {
+        ui->la_error->setText("Not enough money");
+        ui->inputAmount->setText("");
+        checkTransferField();
+        return;
+    }
     if (isCardTransfer)
     {
         Card toCard;
@@ -451,6 +460,13 @@ void MainWindow::on_sbm_clicked()
         {
             ui->la_error->setText(bs.diagnose());
             ui->inputAmount->setText("");
+            checkTransferField();
+            return;
+        }catch(Card::BadCard)
+        {
+            ui->la_error->setText("Not existing card. Try again");
+            ui->inputAmount->setText("");
+            ui->trT->setText("");
             checkTransferField();
             return;
         }
@@ -821,7 +837,22 @@ void MainWindow::on_p_submit_clicked()
         return;
     }
     authCard.cardNumber(card.cardNumber());
-    authCard.pincode(newPin);
+    authCard.pincode(oldPin);
+        try{
+        if (! auth->checkAuthorizationData(authCard))
+        {
+          ui->p_error->setText("Incorrect old PIN. Try again");
+          clearPins();
+          return;
+        }
+        auth->authorize(authCard);
+         }
+        catch(IAuthorization::BadAuthorization ba)
+            {
+            ui->p_error->setText(ba.diagnose());
+            return;
+        }
+     authCard.pincode(newPin);
     try
     {
         auth->checkAuthorizationData(authCard);
